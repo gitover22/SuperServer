@@ -6,7 +6,12 @@
 #define SERVER_H
 
 #include <netinet/in.h>
+#include <memory>
+#include <bits/unordered_map.h>
+#include "../time/heap_time.h"
 #include "../http/http_conn.h"
+#include "../pool/thread_pool.h"
+#include "epoller.h"
 class Server{
 public:
     /*!
@@ -63,8 +68,49 @@ private:
     void Add_Client(int fd, sockaddr_in addr);
 
     void Deal_Listen();
+
     void Deal_Write(HttpConn* client);
+
     void Deal_Read(HttpConn* client);
+
+
+    /**
+     * @brief 发送错误信息
+     * @param [in] fd       文件描述符
+     * @param [in] info     要发送的信息
+    */
+    void Send_Error(int fd, const char*info);
+
+    void Extent_Time(HttpConn* client);
+
+    /**
+     * @brief 关闭客户连接
+     * @param [in] client     客户端连接信息
+    */
+    void Close_Conn(HttpConn* client);
+
+    void On_Read(HttpConn* client);
+    void On_Write(HttpConn* client);
+    void On_Process(HttpConn* client);
+
+    static int Set_fd_Nonblock(int fd);
+
+    static const int MAX_FD = 65536;
+
+    int port_;
+    bool openLinger;
+    int timeout;  // 毫秒
+    bool isClose;
+    int listenFd;
+    char* srcDir;
+    
+    uint32_t listenEvent;
+    uint32_t connEvent;
+   
+    std::unique_ptr<HeapTimer> timer;
+    std::unique_ptr<ThreadPool> threadpool;
+    std::unique_ptr<Epoller> epoller;
+    std::unordered_map<int, HttpConn> users; // 存储连接的客户
 };
 
 
