@@ -1,10 +1,16 @@
+/**
+ * @author  huafeng
+ * @date    2024/3/28
+*/
 #ifndef SERVER_H
 #define SERVER_H
 
+#include <netinet/in.h>
+#include "../http/http_conn.h"
 class Server{
 public:
     /*!
-    * @brief Server类的构造函数
+    * @brief Server类的有参构造函数，用于设置服务器各种参数
     *
     * @param [in] port_num          该服务器的端口
     * @param [in] trigger_mode      触发模式 ET LT
@@ -26,7 +32,39 @@ public:
            const char* mysql_pwd,const char* db_name,int connect_pool_num,
            int thread_pool_num,bool open_log,int log_level,int log_queue_size);
 
+    /*!
+    * @brief Server的析构函数，释放资源
+    *
+    */
+    ~Server();
 
+    /*!
+    * @brief 启动服务器的入口函数
+    *
+    */
+    void Start();
+private:
+    /*!
+    * @brief socket的初试化
+    *
+    */
+    bool Init_Socket();
+
+    /*!
+    * @brief 初试化事件触发模式
+    *
+    */
+    void Init_EventMode(int trigger_mode);
+    /**
+     * @brief 添加连接客户
+     * @param [in] fd       文件描述符
+     * @param [in] addr     客户端地址信息
+    */
+    void Add_Client(int fd, sockaddr_in addr);
+
+    void Deal_Listen();
+    void Deal_Write(HttpConn* client);
+    void Deal_Read(HttpConn* client);
 };
 
 
