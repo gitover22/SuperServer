@@ -1,8 +1,6 @@
 #ifndef BUFFER_H
 #define BUFFER_H
 
-
-
 #include <vector>
 #include <atomic>
 class Buffer{
@@ -39,6 +37,7 @@ private:
     void MakeSpace_(size_t len);
 
     std::vector<char> buffer_;
+
     std::atomic<std::size_t> readPos;
     std::atomic<std::size_t> writePos;
 };
