@@ -3,6 +3,7 @@
     {
       "name": "linux-gcc-x64",
       "includePath": [
+        // 添加头文件检索路径
         "${workspaceFolder}/**"
       ],
       "compilerPath": "/usr/bin/gcc",

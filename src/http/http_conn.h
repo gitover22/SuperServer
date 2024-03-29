@@ -40,7 +40,7 @@ private:
     bool is_Close;
     int iovCnt;
     struct iovec iov[2];
-
+    // 读写缓冲
     Buffer readBuff;
     Buffer writeBuff; 
     HttpRequest request;
