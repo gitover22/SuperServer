@@ -38,7 +38,7 @@ private:
     bool siftdown_(size_t index,size_t n);
     void SwapNode_(size_t i,size_t j);
     std::vector<TimerNode> heap_;
-    std::unordered_map<int,size_t> ref_;
+    std::unordered_map<int,size_t> ref_; // unordered不能插入重复的key
 };
 
 #endif

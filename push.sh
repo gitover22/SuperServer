@@ -1,5 +1,5 @@
 #! /bin/bash
-# @brief 推送远程库
+# 简易推送远程库脚本
 
 # check para
 if [ $# -ne 1 ]; then
