@@ -2,14 +2,13 @@
 #define HEAP_TIME_H
 
 #include <chrono>
-#include <bits/std_function.h>
+#include <functional>
 
 
 
 typedef std::function<void()> TimeoutCallBack;
-typedef std::chrono::high_resolution_closck Clock;
+typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::milliseconds MS;
-
 typedef Clock::time_point TimeStamp;
 
 struct TimerNode{
