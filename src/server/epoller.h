@@ -1,6 +1,9 @@
 #ifndef EPOLLER_H
 #define EPOLLER_H
-
+#include <sys/epoll.h>
+#include <vector>
+#include <unistd.h>
+#include <assert.h>
 class Epoller{
 public:
     explicit Epoller(int maxEvent= 1024);
@@ -14,7 +17,7 @@ public:
 private:
     int epollFd_;
     std::vector<struct epoll_event> events_;
-    
+
 };
 
 #endif
