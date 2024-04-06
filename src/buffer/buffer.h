@@ -4,6 +4,7 @@
 #include <vector>
 #include <atomic>
 class Buffer{
+public:
     Buffer(int initBuffSize = 1024);
     ~Buffer() = default;
     size_t WritableBytes() const; 

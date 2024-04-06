@@ -5,6 +5,9 @@
 #include <bits/types/FILE.h>
 #include <memory>
 #include <thread>
+#include <mutex>
+#include <sys/stat.h>
+#include <assert.h>
 class Log{
 public:
     void init(int level,const char* path="./log",const char* suffix=".log",int maxQueueCapacity = 1024);
@@ -23,6 +26,7 @@ private:
     virtual ~Log();
     void AsyncWrite();
 
+
     static const int LOG_PATH_LEN = 256;
     static const int LOG_NAME_LEN = 256;
     static const int MAX_LINES = 50000;
@@ -35,7 +39,7 @@ private:
     bool isOpen;
     Buffer buff;
     int level;
-    bool isAsync;
+    bool isAsync; // 是否异步
     FILE* fp;
     std::unique_ptr<BlockDeque<std::string>> deque;
     std::unique_ptr<std::thread> writeThread;

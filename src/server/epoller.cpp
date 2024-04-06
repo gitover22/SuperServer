@@ -1,5 +1,5 @@
 #include "epoller.h"
-explicit Epoller::Epoller(int maxEvent= 1024):epollFd_(epoll_create(512)),events_(maxEvent){
+Epoller::Epoller(int maxEvent= 1024):epollFd_(epoll_create(512)),events_(maxEvent){
     assert(epollFd_>=0 && events_.size() > 0);
 }
 Epoller::~Epoller(){
