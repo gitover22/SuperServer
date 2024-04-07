@@ -121,3 +121,22 @@ void Log::write(int level,const char* format,...){
         buff.RetrieveAll();
     }
 }
+void Log::AppendLogLevelTitle(int level){
+    switch(level){
+        case 0:
+            buff.Append("[debug]: ",9);
+            break;
+        case 1:
+            buff.Append("[info] : ", 9);
+            break;
+        case 2:
+            buff.Append("[warn] : ", 9);
+            break;
+        case 3:
+            buff.Append("[error]: ", 9);
+            break;
+        default:
+            buff.Append("[info] : ", 9);
+            break;
+    }
+}
