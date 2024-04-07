@@ -123,5 +123,6 @@
     "typeinfo": "cpp",
     "unordered_set": "cpp",
     "iostream": "cpp"
-  }
+  },
+  "C_Cpp.errorSquiggles": "enabled"
 }

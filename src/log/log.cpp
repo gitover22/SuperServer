@@ -73,3 +73,16 @@ void Log::init(int level,const char* path="./log",const char* suffix=".log",int 
         assert(fp!= nullptr);
     }
 }
+
+void Log::write(int level,const char* format,...){
+    struct timeval now ={0,0};
+    gettimeofday(&now,nullptr);
+    time_t tSec = now.tv_sec;
+    struct tm *sysTime = localtime(&tSec);
+    struct tm t = *sysTime;
+    va_list vaList;
+    if(toDay!=t.tm_mday || (lineCount && (lineCount%MAX_LINES ==0)))
+    {
+        std::unique_lock<std::mutex> locker(mtx);
+    }
+}

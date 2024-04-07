@@ -8,6 +8,7 @@
 #include <mutex>
 #include <sys/stat.h>
 #include <assert.h>
+#include <sys/time.h>
 class Log{
 public:
     void init(int level,const char* path="./log",const char* suffix=".log",int maxQueueCapacity = 1024);
