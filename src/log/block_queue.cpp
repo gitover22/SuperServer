@@ -59,5 +59,13 @@ size_t BlockDeque<T>::get_capacity(){
     return this->capacity;
 }
 
-
+template<class T>
+void BlockDeque<T>::push_back(const T&item){
+    std::unique_lock<std::mutex> locker(mtx);
+    while(deq.size() >= capacity){
+        condProducer.wait(locker);
+    }
+    deq.push_back(item);
+    condProducer.notify_one();
+}
 
