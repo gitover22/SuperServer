@@ -109,6 +109,15 @@ void Log::write(int level,const char* format,...){
         buff.HasWritten(n);
         AppendLogLevelTitle(level);
         va_start(vaList,format);
-        
+        int m = vsnprintf(buff.BeginWrite(),buff.WritableBytes(),format,vaList);
+        va_end(vaList);
+        buff.HasWritten(m);
+        buff.Append("\n\0",2);
+        if(isAsync && deque && !deque->full()){
+            deque->push_back(buff.RetrieveAllToStr());
+        }else{
+            fputs(buff.Peek(),fp);
+        }
+        buff.RetrieveAll();
     }
 }
