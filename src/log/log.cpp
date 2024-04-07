@@ -140,3 +140,26 @@ void Log::AppendLogLevelTitle(int level){
             break;
     }
 }
+void Log::flush(){
+    if(isAsync){
+        deque->flush();
+    }
+    fflush(fp);
+}
+void Log::AsyncWrite(){
+    std::string str ="";
+    while(deque->pop(str)){
+        std::lock_guard<std::mutex> locker(mtx);
+        fputs(str.c_str(),fp);
+
+    }
+
+}
+Log* Log::Instance(){
+    static Log inst;
+    return &inst;
+}
+
+void Log::FlushLogThread(){
+    Log::Instance()->AsyncWrite();
+}
