@@ -16,7 +16,7 @@ public:
     bool full();
     void Close();
     size_t size();
-    size_t capacity();
+    size_t get_capacity();
     T front();
     T back();
     void push_back(const T& item);

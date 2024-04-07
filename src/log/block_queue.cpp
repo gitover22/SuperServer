@@ -40,3 +40,24 @@ T BlockDeque<T>::front(){
     std::lock_guard<std::mutex> locker(mtx);
     return deq.front();
 }
+
+template<class T>
+T BlockDeque<T>::back(){
+    std::lock_guard<std::mutex> locker(mtx);
+    return deq.back();
+}
+
+template<class T>
+size_t BlockDeque<T>::size(){
+    std::lock_guard<std::mutex> locker(mtx);
+    return deq.size();
+}
+
+template<class T>
+size_t BlockDeque<T>::get_capacity(){
+    std::lock_guard<std::mutex> locker(mtx);
+    return this->capacity;
+}
+
+
+
