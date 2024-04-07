@@ -8,6 +8,7 @@
 template<class T>
 class BlockDeque{
 public:
+//类成员函数的声明
     explicit BlockDeque(size_t MaxCapacity  = 1000);
     ~BlockDeque();
     void clear();
