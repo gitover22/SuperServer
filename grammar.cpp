@@ -1,42 +1,48 @@
 #include <iostream>
-#include <memory>
-#include <mutex>
 #include <condition_variable>
-#include <queue>
-#include <functional>
-
-struct Pool{
-    std::mutex mtx;
-    std::condition_variable cond;
-    bool isClosed;
-    std::queue<std::function<void()>> tasks;
-    // 构造函数初始化 isClosed 为 false
-    // Pool() : isClosed(false) {}
-};
-
-int main() {
-    // 创建一个 Pool 实例的 shared_ptr
-    std::shared_ptr<Pool> pool_ = std::make_shared<Pool>();
-
-    // 通过智能指针访问 Pool 的成员
-    // 比如，我们可以修改 isClosed 状态
-    pool_->isClosed = false; // 假设我们现在关闭 pool
-
-    // 也可以向 tasks 队列添加任务
-    pool_->tasks.push([]{ std::cout << "Hello from the task!" << std::endl; });
-    pool_->tasks.push([]{ std::cout << "Hello from the task!" << std::endl; });
-    pool_->tasks.push([]{ std::cout << "Hello from the task!" << std::endl; });
-    pool_->tasks.push([]{ std::cout << "Hello from the task!" << std::endl; });
-    pool_->tasks.push([]{ std::cout << "Hello from the task!" << std::endl; });
-    pool_->tasks.push([]{ std::cout << "Hello from the task!" << std::endl; });
-    pool_->tasks.push([]{ std::cout << "Hello from the task!" << std::endl; });
-
-    // 检查并执行一个任务（简化示例，实际中需要更复杂的线程同步逻辑）
-    while (!pool_->tasks.empty() && !pool_->isClosed) {
-        auto task = std::move(pool_->tasks.front());
-        pool_->tasks.pop();
-        task(); // 执行任务
+#include <thread>
+#include <chrono>
+ 
+std::condition_variable cv;
+std::mutex cv_m; // 此互斥用于三个目的：
+                 // 1) 同步到 i 的访问
+                 // 2) 同步到 std::cerr 的访问
+                 // 3) 为条件变量 cv
+int i = 0; // 共享资源
+ 
+void waits()
+{
+    std::unique_lock<std::mutex> lk(cv_m);
+    
+    std::cerr << "Waiting... \n";
+    cv.wait(lk, []{return i == 1;});
+    std::cerr << "...finished waiting. i == 1\n";
+}
+ 
+void signals()
+{
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    {
+        std::lock_guard<std::mutex> lk(cv_m);
+        std::cerr << "Notifying...\n";
     }
-
-    return 0;
+    cv.notify_all();
+ 
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+ 
+    {
+        std::lock_guard<std::mutex> lk(cv_m);
+        i = 1;
+        std::cerr << "Notifying again...\n";
+    }
+    cv.notify_all();
+}
+ 
+int main()
+{
+    std::thread t1(waits), t2(waits), t3(waits), t4(signals);
+    t1.join(); 
+    t2.join(); 
+    t3.join();
+    t4.join();
 }
