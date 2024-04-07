@@ -83,6 +83,32 @@ void Log::write(int level,const char* format,...){
     va_list vaList;
     if(toDay!=t.tm_mday || (lineCount && (lineCount%MAX_LINES ==0)))
     {
+        std::unique_lock<std::mutex> locker(mtx); //unique_lock提供更多功能，比如可以手动lock和unlock
+        locker.unlock();
+        char newFile[LOG_NAME_LEN];
+        char tail[36] = {0};
+        snprintf(tail,36,"%04d_%02d_%02d",t.tm_year+1900,t.tm_mon+1,t.tm_mday);
+        if(toDay != t.tm_mday){
+            snprintf(newFile,LOG_NAME_LEN-72,"%s%s%s",path,tail,suffix);
+            toDay = t.tm_mday;
+            lineCount = 0;
+        }else{
+            snprintf(newFile,LOG_NAME_LEN-72,"%s/%s-%d%s",path,tail,(lineCount/MAX_LINES),suffix);
+        }
+        locker.lock();
+        flush();
+        fclose(fp);
+        fp = fopen(newFile,"a");
+        assert(fp != nullptr);
+    }
+    {
         std::unique_lock<std::mutex> locker(mtx);
+        lineCount ++;
+        int n = snprintf(buff.BeginWrite(),128,"%d-%02d-%02d %02d:%02d:%02d.%06ld ",t.tm_year + 1900, t.tm_mon + 1, t.tm_mday,
+                    t.tm_hour, t.tm_min, t.tm_sec, now.tv_usec);
+        buff.HasWritten(n);
+        AppendLogLevelTitle(level);
+        va_start(vaList,format);
+        
     }
 }
