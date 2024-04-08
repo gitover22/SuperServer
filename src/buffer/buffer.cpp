@@ -101,3 +101,14 @@ void Buffer::MakeSpace_(size_t len){
         assert(readable == ReadableBytes());
     }
 }
+
+ssize_t Buffer::WriteFd(int fd,int* saveErrno){
+    size_t readSize =ReadableBytes();
+    ssize_t len = write(fd,Peek(),readSize);
+    if(len < 0){
+        *saveErrno = errno;
+        return len;
+    }
+    readPos += len;
+    return len;
+}

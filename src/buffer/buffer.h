@@ -6,6 +6,7 @@
 #include <string>
 #include <assert.h>
 #include <cstring>
+#include <unistd.h>
 class Buffer{
 public:
     Buffer(int initBuffSize = 1024);
