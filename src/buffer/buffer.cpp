@@ -71,3 +71,14 @@ void Buffer::Append(const char *ss,size_t len){
     std::copy(ss,ss+len,BeginWrite());
     HasWritten(len);
 }
+
+void Buffer::Append(const Buffer&buff){
+    Append(buff.Peek(),buff.ReadableBytes());
+}
+
+void Buffer::EnsureWriteable(size_t len){
+    if(WritableBytes() < len){
+        MakeSpace_(len);
+    }
+    assert(WritableBytes() >= len);
+}
