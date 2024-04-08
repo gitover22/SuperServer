@@ -1,7 +1,10 @@
 #ifndef THREAD_POOL_H
 #define THREAD_POOL_H
-
+#include <assert.h>
 #include<mutex>
+#include<queue>
+#include<functional>
+#include<thread>
 #include<condition_variable>
 class ThreadPool{
 public:
