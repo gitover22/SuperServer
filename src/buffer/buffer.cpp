@@ -47,3 +47,27 @@ std::string Buffer::RetrieveAllToStr(){
     RetrieveAll();
     return str;
 }
+
+const char* Buffer::BeginWriteConst() const{
+    return BeginPtr_() + writePos;
+}
+char* Buffer::BeginWrite(){
+    return BeginPtr_() +writePos;
+}
+
+void Buffer::HasWritten(size_t len){
+    writePos += len;
+}
+void Buffer::Append(const std::string& str){
+    Append(str.data(),str.length());
+}
+void Buffer::Append(const void *data,size_t len){
+    assert(data);
+    Append(static_cast<const char *>(data),len);
+}
+void Buffer::Append(const char *ss,size_t len){
+    assert(ss);
+    EnsureWriteable(len);
+    std::copy(ss,ss+len,BeginWrite());
+    HasWritten(len);
+}
