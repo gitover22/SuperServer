@@ -122,7 +122,8 @@
     "thread": "cpp",
     "typeinfo": "cpp",
     "unordered_set": "cpp",
-    "iostream": "cpp"
+    "iostream": "cpp",
+    "cinttypes": "cpp"
   },
   "C_Cpp.errorSquiggles": "enabled"
 }
