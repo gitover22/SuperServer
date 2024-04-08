@@ -18,3 +18,23 @@ ThreadPool::ThreadPool(size_t threadCount = 8):pool_(std::make_shared<Pool>()){
         }).detach();
     }
 }
+
+ThreadPool::~ThreadPool(){
+    if(static_cast<bool>(pool_)){
+        {
+            std::lock_guard<std::mutex> locker(pool_->mtx);
+            pool_->isClosed = true;
+        }
+        pool_->cond.notify_all();
+    }   
+}
+
+template<typename T>
+void ThreadPool::AddTask<T>(T&& task){
+    {
+        std::lock_guard<std::mutex> locker(pool_->mtx);
+        pool_->tasks.emplace(std::forward<T>(task));
+
+    }
+    pool_->cond.notify_one();
+}
