@@ -7,6 +7,8 @@
 #include <assert.h>
 #include <cstring>
 #include <unistd.h>
+#include <sys/uio.h>
+// #include <struct_iovec.h>
 class Buffer{
 public:
     Buffer(int initBuffSize = 1024);

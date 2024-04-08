@@ -112,3 +112,25 @@ ssize_t Buffer::WriteFd(int fd,int* saveErrno){
     readPos += len;
     return len;
 }
+
+ssize_t Buffer::ReadFd(int fd ,int *saveErrno){
+    char buff[65535];
+    struct iovec iov[2]; // sys/uio.h
+    const size_t writable =WritableBytes();
+    /* 分散读， 保证数据全部读完 */
+    iov[0].iov_base = BeginPtr_() + writePos;
+    iov[0].iov_len = writable;
+    iov[1].iov_base = buff;
+    iov[1].iov_len = sizeof(buff);
+
+    const ssize_t len =readv(fd,iov,2);
+    if(len < 0){
+        *saveErrno =errno;
+    }else if(static_cast<size_t>(len) <= writable){
+        writePos += len;
+    }else{
+        writePos = buffer_.size();
+        Append(buff, len-writable);
+    }
+    return len;
+}
