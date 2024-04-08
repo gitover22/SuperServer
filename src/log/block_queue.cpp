@@ -84,3 +84,9 @@ bool BlockDeque<T>::empty(){
     std::unique_lock<std::mutex> locker(mtx);
     return deq.empty();
 }
+
+template<class T>
+bool BlockDeque<T>::full(){
+    std::unique_lock<std::mutex> locker(mtx);
+    return deq.size()>= capacity;
+}
