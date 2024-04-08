@@ -4,6 +4,8 @@
 #include <vector>
 #include <atomic>
 #include <string>
+#include <assert.h>
+#include <cstring>
 class Buffer{
 public:
     Buffer(int initBuffSize = 1024);

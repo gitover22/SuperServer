@@ -19,3 +19,26 @@ size_t Buffer::WritableBytes()const{
     return buffer_.size() - writePos;
 }
 
+size_t Buffer::PrependableBytes() const{
+    return readPos;
+}
+const char* Buffer::Peek() const {
+    return BeginPtr_() +readPos;
+}
+void Buffer::Retrieve(size_t len){
+    assert(len <= ReadableBytes());
+    readPos += len;
+}
+
+void Buffer::RetrieveUntil(const char* end){
+    assert(Peek() <= end);
+    Retrieve(end - Peek());
+}
+/**
+ * @brief 重置buffer区为全0
+*/
+void Buffer::RetrieveAll(){
+    bzero(&buffer_[0],buffer_.size());
+    readPos =0 ;
+    writePos =0 ;
+}
