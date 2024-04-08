@@ -108,3 +108,21 @@ bool BlockDeque<T>::pop(T&item){
     condProducer.notify_one();
     return true;
 }
+
+
+template<class T>
+bool BlockDeque<T>::pop(T &item,int timeout){
+    std::unique_lock<std::mutex> locker(mtx);
+    while(deq.empty()){
+        if(condConsumer.wait_for(locker,std::chrono::seconds(timeout)) == std::cv_status::timeout){
+            return false;
+        }
+        if(isClose){
+            return false;
+        }
+    }
+    item = deq.front();
+    deq.pop_front();
+    condProducer.notify_one();
+    return true;
+}
