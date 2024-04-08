@@ -85,8 +85,26 @@ bool BlockDeque<T>::empty(){
     return deq.empty();
 }
 
+/**
+ * @brief deq队列是否已满
+*/
 template<class T>
 bool BlockDeque<T>::full(){
     std::unique_lock<std::mutex> locker(mtx);
     return deq.size()>= capacity;
+}
+
+template<class T>
+bool BlockDeque<T>::pop(T&item){
+    std::unique_lock<std::mutex> locker(mtx);
+    while(deq.empty()){
+        condConsumer.wait(locker);
+        if(isClose){
+            return false;
+        }
+    }
+    item = deq.front();
+    deq.pop_front();
+    condProducer.notify_one();
+    return true;
 }
