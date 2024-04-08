@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <atomic>
+#include <string>
 class Buffer{
 public:
     Buffer(int initBuffSize = 1024);
@@ -39,8 +40,8 @@ private:
 
     std::vector<char> buffer_;
 
-    std::atomic<std::size_t> readPos;
-    std::atomic<std::size_t> writePos;
+    std::atomic<std::size_t> readPos; // 读到的位置
+    std::atomic<std::size_t> writePos; // 写到的位置
 };
 
 
