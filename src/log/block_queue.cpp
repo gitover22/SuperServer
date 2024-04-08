@@ -69,3 +69,18 @@ void BlockDeque<T>::push_back(const T&item){
     condProducer.notify_one();
 }
 
+template<class T>
+void BlockDeque<T>::push_front(const T&item){
+    std::unique_lock<std::mutex> locker(mtx);
+    while(deq.size() >capacity){
+        condProducer.wait(locker);
+    }
+    deq.push_front(item);
+    condProducer.notify_one();
+}
+
+template<class T>
+bool BlockDeque<T>::empty(){
+    std::unique_lock<std::mutex> locker(mtx);
+    return deq.empty();
+}
