@@ -82,3 +82,22 @@ void Buffer::EnsureWriteable(size_t len){
     }
     assert(WritableBytes() >= len);
 }
+
+char* Buffer::BeginPtr_(){
+    return &*buffer_.begin();
+}
+const char* Buffer::BeginPtr_() const{
+    return &*buffer_.begin();
+}
+
+void Buffer::MakeSpace_(size_t len){
+    if(WritableBytes() + PrependableBytes() <len){
+        buffer_.resize(writePos+len+1); // 扩容
+    }else{
+        size_t readable = ReadableBytes();
+        std::copy(BeginPtr_() + readPos,BeginPtr_()+writePos,BeginPtr_());
+        readPos =0;
+        writePos =readPos+readable;
+        assert(readable == ReadableBytes());
+    }
+}
