@@ -1,5 +1,5 @@
 #include "buffer.h"
-// 开销更大
+// 相比于函数内初试化，初试化列表开销更小
 // Buffer::Buffer(int initBufferSize = 1024){
 //     buffer_ = std::vector<char>(initBufferSize);
 //     readPos=0;
