@@ -2,7 +2,10 @@
 #include <condition_variable>
 #include <thread>
 #include <chrono>
- 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <assert.h>
 std::condition_variable cv;
 std::mutex cv_m; // 此互斥用于三个目的：
                  // 1) 同步到 i 的访问
@@ -52,9 +55,8 @@ void func(){
  
 int main()
 {
-    std::thread t1(waits), t2(func);
-    t1.join(); 
-    t2.join(); 
-    // t3.join();
-    // t4.join();
+    struct stat *st;
+    const char* files="push.sh";
+    assert(stat(files,st)==0);
+    std::cout<<st->st_gid<<"  "<<st->st_size<<std::endl;
 }
