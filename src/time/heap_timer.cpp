@@ -21,17 +21,45 @@ void HeapTimer::clear(){
     heap_.clear();
 }
 void HeapTimer::tick(){
+    if(heap_.empty()) return;
+    while(!heap_.empty()){
+        TimerNode node =heap_.front();
+        if(std::chrono::duration_cast<MS>(node.expires - Clock::now()).count()>0){
+            break;
+        }
+        node.cb();
+        pop();
+    }
 
 }
 void HeapTimer::pop(){
-
+    assert(!heap_.empty());
+    del_(0);
 }
 int HeapTimer::GetNextTick(){
+    tick();
+    size_t res = -1;
+    if(!heap_.empty()){
+        res = std::chrono::duration_cast<MS>(heap_.front().expires-Clock::now()).count();
+        if(res < 0 ) res = 0;
+    }
+    return res;
 
 }
 
 void HeapTimer::del_(size_t i){
-
+    assert(!heap_.empty() && i>=0 &&i<heap_.size());
+    size_t index = i;
+    size_t n =heap_.size() - 1;
+    assert(index<=n);
+    if(index<n){
+        SwapNode_(index,n);
+        if(!siftdown_(index,n)){
+            siftup_(index);
+        }
+    }
+    ref_.erase(heap_.back().id);
+    heap_.pop_back();
 }
 void HeapTimer::siftup_(size_t i){
     assert(i>=0 && i<heap_.size());

@@ -30,6 +30,9 @@ public:
     void add(int id,int timeOut,const TimeoutCallBack& cb);
     void doWork(int id);
     void clear();
+    /**
+     * @brief 清理超时节点
+    */
     void tick();
     void pop();
     int GetNextTick();
