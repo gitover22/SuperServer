@@ -6,6 +6,7 @@
 #include "../buffer/buffer.h"
 #include "./http_request.h"
 #include "./http_response.h"
+#include "../log/log.h"
 class HttpConn{
 public:
     HttpConn();
