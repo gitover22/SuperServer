@@ -12,6 +12,8 @@
 #include "../pool/thread_pool.h"
 #include "epoller.h"
 #include "../time/heap_timer.h"
+#include "../pool/sqlconnpool.h"
+#include "../log/log.h"
 class Server{
 public:
     /*!
@@ -57,7 +59,7 @@ private:
 
     /*!
     * @brief 初试化事件触发模式
-    *
+    * @param trigger_mode [in] 接受的触发模式
     */
     void Init_EventMode(int trigger_mode);
     /**
@@ -99,7 +101,7 @@ private:
 
     int port_;
     bool openLinger;
-    int timeout;  // 毫秒
+    int _timeout;  // 毫秒
     bool isClose;
     int listenFd;
     char* srcDir;
