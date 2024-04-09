@@ -67,7 +67,8 @@ private:
     static int ConverHex(char ch);
 
     PARSE_STATE state_;
-    std::string method_, path_, version_, body_;
+    std::string method_,version_, body_;
+    std::string path_; // 代表html的路径
     std::unordered_map<std::string, std::string> header_;
     std::unordered_map<std::string, std::string> post_;
 

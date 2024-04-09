@@ -135,7 +135,21 @@ void HttpRequest::ParsePath_(){
     }
 }
 void HttpRequest::ParsePost_(){
-
+    if(method_ == "POST"&& header_["Content-Type"]=="application/x-www-form-urlencoded"){
+        ParseFromUrlencoded_();
+        if(DEFAULT_HTML_TAG.count(path_)){
+            int tag =DEFAULT_HTML_TAG.find(path_)->second;
+            LOG_DEBUG("Tag:%d",tag);
+            if(tag == 0||tag ==1){
+                bool isLogin =(tag==1);
+                if(UserVerify(post_["username"],post_["password"],isLogin)){
+                    path_ = "/welcome.html";
+                }else{
+                    path_ = "/error.html";
+                }
+            }
+        }
+    }
 }
 void HttpRequest::ParseFromUrlencoded_(){
 

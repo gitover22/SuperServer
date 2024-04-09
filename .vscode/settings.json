@@ -123,7 +123,9 @@
     "typeinfo": "cpp",
     "unordered_set": "cpp",
     "iostream": "cpp",
-    "cinttypes": "cpp"
+    "cinttypes": "cpp",
+    "bitset": "cpp",
+    "regex": "cpp"
   },
   "C_Cpp.errorSquiggles": "enabled"
 }
