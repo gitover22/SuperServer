@@ -49,6 +49,7 @@ private:
     void ParseFromUrlencoded_();
 
     static bool UserVerify(const std::string& name, const std::string& pwd, bool isLogin);
+    static int ConverHex(char ch);
 
     PARSE_STATE state_;
     std::string method_, path_, version_, body_;
@@ -57,7 +58,6 @@ private:
 
     static const std::unordered_set<std::string> DEFAULT_HTML;
     static const std::unordered_map<std::string, int> DEFAULT_HTML_TAG;
-    static int ConverHex(char ch);
 
 
 };
