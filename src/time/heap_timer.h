@@ -3,7 +3,7 @@
 
 #include <chrono>
 #include <functional>
-
+#include <assert.h>
 
 
 typedef std::function<void()> TimeoutCallBack;
@@ -15,6 +15,7 @@ struct TimerNode{
     int id;
     TimeStamp expires;
     TimeoutCallBack cb;
+    // 重载 <
     bool operator<(const TimerNode& t){
         return expires < t.expires;
     }
