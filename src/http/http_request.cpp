@@ -60,40 +60,79 @@ bool HttpRequest::parse(Buffer& buff){
 }
 
 std::string HttpRequest::path() const{
-
+    return path_;
 }
 std::string& HttpRequest::path(){
-
+    return path_;
 }
 std::string HttpRequest::method() const{
-
+    return method_;
 }
 std::string HttpRequest::version() const{
-
+    return version_;
 }
 
 std::string HttpRequest::GetPost(const std::string& key) const{
-
+    assert(key != "");
+    if(post_.count(key) == 1){
+        return post_.find(key)->second;
+    }
+    return "";
 }
 std::string HttpRequest::GetPost(const char* key) const{
-
+    assert(key != nullptr);
+    if(post_.count(key) == 1){
+        return post_.find(key)->second;
+    }
+    return "";
 }
 bool HttpRequest::IsKeepAlive() const{
-
+    if(header_.count("connection") == 1){
+        return header_.find("Connection")->second == "keep-alive" && version_ == "1.1";
+    }
+    return false;
 }
 
 bool HttpRequest::ParseRequestLine_(const std::string& line){
-
+    std::regex patten("^([^ ]*) ([^ ]*) HTTP/([^ ]*)$");
+    std::smatch subMatch;
+    if(std::regex_match(line,subMatch,patten)){
+        method_= subMatch[1];
+        path_ = subMatch[2];
+        version_ = subMatch[3];
+        state_=HEADERS;
+        return false;
+    }
+    LOG_ERROR("ParseRequestLine Error");
+    return false;
 }
 void HttpRequest::ParseHeader_(const std::string& line){
-
+    std::regex patten("^([^:]*): ?(.*)$");
+    std::smatch subMatch;
+    if(std::regex_match(line,subMatch,patten)){
+        header_[subMatch[1]] = subMatch[2];
+    }else{
+        state_ = BODY;
+    }
 }
 void HttpRequest::ParseBody_(const std::string& line){
-
+    body_ =line;
+    ParsePost_();
+    state_ =FINISH;
+    LOG_DEBUG("Body:%s, len:%d", line.c_str(), line.size());
 }
 
 void HttpRequest::ParsePath_(){
-
+    if(path_ == "/"){
+        path_ ="/index.html"; //用户第一次进入页面，导向index.html
+    }else{
+        for(auto &item:DEFAULT_HTML){
+            if(item == path_){
+                path_+= ".html";
+                break;
+            }    
+        }
+    }
 }
 void HttpRequest::ParsePost_(){
 

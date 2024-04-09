@@ -7,6 +7,7 @@
 #include "../buffer/buffer.h"
 #include <algorithm>
 #include "../log/log.h"
+#include <regex>
 class HttpRequest{
 public:
     HttpRequest();
@@ -43,10 +44,21 @@ public:
     bool IsKeepAlive() const;
 
 private:
+    /**
+     * @brief 解析请求行
+    */
     bool ParseRequestLine_(const std::string& line);
+    /**
+     * @brief 解析请求头部
+    */
     void ParseHeader_(const std::string& line);
+    /**
+     * @brief 解析请求体
+    */
     void ParseBody_(const std::string& line);
-
+    /**
+     * @brief 解析路径
+    */
     void ParsePath_();
     void ParsePost_();
     void ParseFromUrlencoded_();
