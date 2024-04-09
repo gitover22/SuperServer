@@ -5,10 +5,13 @@
 #include <unordered_map>
 #include <unordered_set>
 #include "../buffer/buffer.h"
+#include <algorithm>
+#include "../log/log.h"
 class HttpRequest{
 public:
     HttpRequest();
     ~HttpRequest() = default;
+    // http请求报文的划分
     enum PARSE_STATE{
         REQUEST_LINE, // 请求行
         HEADERS,      // 请求头部
