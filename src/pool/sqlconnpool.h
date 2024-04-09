@@ -5,10 +5,18 @@
 #include <semaphore.h>
 #include <queue>
 #include <mutex>
-
+#include "../log/log.h"
 class SqlConnPool{
 public:
+    /**
+     * @brief 单例模式
+     * @return SqlConnPool的实例地址
+    */
     static SqlConnPool *Instance();
+    /**
+     * @brief 从数据库连接池中获得一个连接实例
+     * @return 返回实例(MYSQL *)地址 
+    */
     MYSQL *GetConn();
     void FreeConn(MYSQL * conn);
     int GetFreeConnCount();
