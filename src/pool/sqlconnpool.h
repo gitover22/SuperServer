@@ -18,7 +18,7 @@ public:
      * @return 返回实例(MYSQL *)地址 
     */
     MYSQL *GetConn();
-    void FreeConn(MYSQL * conn);
+    void FreeConn(MYSQL * sql);
     int GetFreeConnCount();
     void init(const char* host,int port,
               const char* user,const char* pwd,

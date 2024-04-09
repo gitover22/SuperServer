@@ -22,11 +22,15 @@ MYSQL *SqlConnPool::GetConn(){
     }
     return sql;
 }
-void SqlConnPool::FreeConn(MYSQL * conn){
-
+void SqlConnPool::FreeConn(MYSQL * sql){
+    assert(sql);
+    std::lock_guard<std::mutex>locker(mtx_);
+    connQue_.push(sql);
+    sem_post(&semId_); //唤醒+1
 }
 int SqlConnPool::GetFreeConnCount(){
-
+    std::lock_guard<std::mutex> locker(mtx_);
+    return connQue_.size();
 }
 void SqlConnPool::init(const char* host,int port,
             const char* user,const char* pwd,
@@ -51,7 +55,13 @@ void SqlConnPool::init(const char* host,int port,
     sem_init(&semId_,0,MAX_CONN_);
 }
 void SqlConnPool::ClosePool(){
-
+    std::lock_guard<std::mutex> locker(mtx_);
+    while(!connQue_.empty()){
+        auto item =connQue_.front();
+        connQue_.pop();
+        mysql_close(item);
+    }
+    mysql_library_end();
 }
 
 SqlConnPool::SqlConnPool(){
