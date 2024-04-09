@@ -7,14 +7,36 @@ HeapTimer::HeapTimer(){
 HeapTimer::~HeapTimer(){
     clear();
 }
-void HeapTimer::adjust(int id, int newExpires){
-
+void HeapTimer::adjust(int id, int timeout){
+    assert(!heap_.empty() && ref_.count(id) > 0);
+    heap_[ref_[id]].expires = Clock::now() +MS(timeout);
+    siftdown_(ref_[id],heap_.size());
 }
-void HeapTimer::add(int id,int timeOut,const TimeoutCallBack& cb){
-
+void HeapTimer::add(int id,int timeout,const TimeoutCallBack& cb){
+    assert(id >= 0);
+    size_t i;
+    if(ref_.count(id) == 0){
+        // 新节点
+        i =heap_.size();
+        ref_[id] = i;
+        heap_.push_back({id,Clock::now()+MS(timeout),cb});
+        siftup_(i);
+    }else{
+        // 已有 修改堆
+        i =ref_[id];
+        heap_[i].expires =Clock::now() +MS(timeout);
+        heap_[i].cb =cb;
+        if(!siftdown_(i,heap_.size())){
+            siftup_(i);
+        }
+    }
 }
 void HeapTimer::doWork(int id){
-
+    if(heap_.empty() || ref_.count(id) == 0) return;
+    size_t i =ref_[id];
+    TimerNode node = heap_[i];
+    node.cb();
+    del_(i);
 }
 void HeapTimer::clear(){
     ref_.clear();
