@@ -56,6 +56,7 @@ void SqlConnPool::init(const char* host,int port,
 }
 void SqlConnPool::ClosePool(){
     std::lock_guard<std::mutex> locker(mtx_);
+    // 轮番从池中取出并关闭
     while(!connQue_.empty()){
         auto item =connQue_.front();
         connQue_.pop();
