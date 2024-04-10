@@ -82,10 +82,24 @@ size_t HttpResponse::FileLen() const{
     return mmFileStat.st_size;
 }
 void HttpResponse::ErrorContent(Buffer& buff,std::string message){
+    std::string body;
+    std::string status;
+    body += "<html><title>Error</title>";
+    body += "<body bgcolor=\"ffffff\">";
+    if(CODE_STATUS.count(code) == 1) {
+        status = CODE_STATUS.find(code)->second;
+    } else {
+        status = "Bad Request";
+    }
+    body += std::to_string(code) + " : " + status  + "\n";
+    body += "<p>" + message + "</p>";
+    body += "<hr><em>SuperServer</em></body></html>";
+    buff.Append("Content-length: " + std::to_string(body.size()) + "\r\n\r\n");
+    buff.Append(body);
 
 }
 int HttpResponse::Code() const{
-
+    return code;
 }
 void HttpResponse::AddStateLine(Buffer &buff){
     std::string status;
