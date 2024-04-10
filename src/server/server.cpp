@@ -74,3 +74,67 @@ void Server::Init_EventMode(int trigMode) {
     }
     HttpConn::isET = (connEvent & EPOLLET);
 }
+
+void Server::Start() {
+    int timeMS = -1;  /* epoll wait timeout == -1 无事件将阻塞 */
+    if(!isClose) { LOG_INFO("========== Server start =========="); }
+    while(!isClose) {
+        if(_timeout > 0) {
+            timeMS = timer->GetNextTick();
+        }
+        // 等待事件   标准的epoll处理流程
+        int eventCnt = epoller->Wait(timeMS);
+        for(int i = 0; i < eventCnt; i++) {
+            /* 处理事件 */
+            int fd = epoller->GetEventFd(i);
+            uint32_t events = epoller->GetEvents(i);
+            if(fd == listenFd) {
+                Deal_Listen();
+            }
+            else if(events & (EPOLLRDHUP | EPOLLHUP | EPOLLERR)) {
+                assert(users.count(fd) > 0);
+                Close_Conn(&users[fd]);
+            }
+            else if(events & EPOLLIN) {
+                assert(users.count(fd) > 0);
+                Deal_Read(&users[fd]);
+            }
+            else if(events & EPOLLOUT) {
+                assert(users.count(fd) > 0);
+                Deal_Write(&users[fd]);
+            } else {
+                LOG_ERROR("Unexpected event");
+            }
+        }
+    }
+}
+void Server::Send_Error(int fd, const char*info) {
+    assert(fd > 0);
+    int ret = send(fd, info, strlen(info), 0);
+    if(ret < 0) {
+        LOG_WARN("send error to client[%d] error!", fd);
+    }
+    close(fd);
+}
+
+void Server::Close_Conn(HttpConn* client) {
+    assert(client);
+    LOG_INFO("Client[%d] quit!", client->GetFd());
+    epoller->DelFd(client->GetFd());
+    client->Close();
+}
+
+void Server::Add_Client(int fd, sockaddr_in addr) {
+    assert(fd > 0);
+    users[fd].init(fd, addr);
+    if(_timeout > 0) {
+        timer->add(fd, _timeout, std::bind(&Server::Close_Conn, this, &users[fd]));
+    }
+    epoller->AddFd(fd, EPOLLIN | connEvent);
+    Set_fd_Nonblock(fd);
+    LOG_INFO("Client[%d] in!", users[fd].GetFd());
+}
+int Server::Set_fd_Nonblock(int fd) {
+    assert(fd > 0);
+    return fcntl(fd, F_SETFL, fcntl(fd, F_GETFD, 0) | O_NONBLOCK);
+}

@@ -14,6 +14,8 @@
 #include "../time/heap_timer.h"
 #include "../pool/sqlconnpool.h"
 #include "../log/log.h"
+#include <netinet/in.h>
+#include <functional> 
 class Server{
 public:
     /*!
