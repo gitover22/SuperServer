@@ -8,6 +8,8 @@
 #include <algorithm>
 #include "../log/log.h"
 #include <regex>
+#include <mysql/mysql.h>
+#include "../pool/sqlconnRAll.h"
 class HttpRequest{
 public:
     HttpRequest();
