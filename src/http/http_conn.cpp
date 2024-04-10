@@ -86,3 +86,30 @@ ssize_t HttpConn::write(int* saveErrno){
     }while(isET || ToWriteBytes() > 10240);
     return len;
 }
+
+bool HttpConn::process() {
+    request.Init();
+    if(readBuff.ReadableBytes() <= 0) {
+        return false;
+    }
+    else if(request.parse(readBuff)) {
+        LOG_DEBUG("%s", request.path().c_str());
+        response.Init(srcDir, request.path(), request.IsKeepAlive(), 200);
+    } else {
+        response.Init(srcDir, request.path(), false, 400);
+    }
+    response.MakeResponse(writeBuff);
+    /* 响应头 */
+    iov[0].iov_base = const_cast<char*>(writeBuff.Peek());
+    iov[0].iov_len = writeBuff.ReadableBytes();
+    iovCnt = 1;
+
+    /* 文件 */
+    if(response.FileLen() > 0  && response.File()) {
+        iov[1].iov_base = response.File();
+        iov[1].iov_len = response.FileLen();
+        iovCnt = 2;
+    }
+    LOG_DEBUG("filesize:%d, %d  to %d", response.FileLen() , iovCnt, ToWriteBytes());
+    return true;
+}
