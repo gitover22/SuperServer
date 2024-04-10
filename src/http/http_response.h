@@ -4,6 +4,8 @@
 #include <string>
 #include "../buffer/buffer.h"
 #include <unordered_map>
+#include <sys/mman.h>    // mmap, munmap
+#include "sys/stat.h"
 class HttpResponse{
 public:
     HttpResponse();

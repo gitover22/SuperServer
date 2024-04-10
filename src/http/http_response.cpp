@@ -57,13 +57,23 @@ void HttpResponse::Init(const std::string& strDir,std::string& path,bool isKeepA
     this->mmFileStat = {0};
 }
 void HttpResponse::MakeResponse(Buffer& buff){
-
+    if(stat((srcDir + path).data(), &mmFileStat) < 0 || S_ISDIR(mmFileStat.st_mode)) {
+        code = 404;
+    }else if(!(mmFileStat.st_mode & S_IROTH)) {
+        code = 403;
+    }else if(code == -1) { 
+        code = 200; 
+    }
+    ErrorHtml();
+    AddStateLine(buff);
+    AddHeader(buff);
+    AddContent(buff);
 }
 void HttpResponse::UnmapFile(){
     if(mmFile) {
         munmap(mmFile, mmFileStat.st_size);
         mmFile = nullptr;
-    }
+    } 
 }
 char* HttpResponse::File(){
 
