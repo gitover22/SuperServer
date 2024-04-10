@@ -1,7 +1,9 @@
 #ifndef HTTP_RESPONSE_H
 #define HTTP_RESPONSE_H
 #include <bits/struct_stat.h>
-
+#include <string>
+#include "../buffer/buffer.h"
+#include <unordered_map>
 class HttpResponse{
 public:
     HttpResponse();
