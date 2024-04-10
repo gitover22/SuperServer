@@ -135,5 +135,14 @@ void HttpResponse::ErrorHtml(){
     }
 }
 std::string HttpResponse::GetFileType(){
-    
+    std::string::size_type idx =path.find_last_of('.');
+    if(idx == std::string::npos){
+        return "text/plaint";
+    }
+    std::string suffix =path.substr(idx);
+    if(SUFFIX_TYPE.count(suffix) == 1){
+        return SUFFIX_TYPE.find(suffix)->second;
+    }
+    return "text/plain";
+
 }
