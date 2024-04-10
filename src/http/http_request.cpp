@@ -152,7 +152,37 @@ void HttpRequest::ParsePost_(){
     }
 }
 void HttpRequest::ParseFromUrlencoded_(){
-
+    if(body_.size() == 0) return ;
+    std::string key,value;
+    int num =0;
+    int n = body_.size();
+    int i =0,j=0;
+    for(;i<n;i++){
+        char ch =body_[i];
+        switch(ch){
+            case '=':
+                key = body_.substr(j,i-j);
+                j = i+1;
+                break;
+            case '+':
+                body_[i] = ' ';
+                break;
+            case '%':
+                num = ConverHex(body_[i + 1]) * 16 + ConverHex(body_[i + 2]);
+                body_[i + 2] = num % 10 + '0';
+                body_[i + 1] = num / 10 + '0';
+                i += 2;
+                break;
+            case '&':
+                value = body_.substr(j, i - j);
+                j = i + 1;
+                post_[key] = value;
+                LOG_DEBUG("%s = %s", key.c_str(), value.c_str());
+                break;
+            default:
+                break;
+        }
+    }
 }
 bool HttpRequest::UserVerify(const std::string& name, const std::string& pwd, bool isLogin){
 
