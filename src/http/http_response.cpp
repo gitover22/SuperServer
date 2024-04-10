@@ -76,10 +76,10 @@ void HttpResponse::UnmapFile(){
     } 
 }
 char* HttpResponse::File(){
-
+    return mmFile;
 }
 size_t HttpResponse::FileLen() const{
-
+    return mmFileStat.st_size;
 }
 void HttpResponse::ErrorContent(Buffer& buff,std::string message){
 
@@ -88,17 +88,51 @@ int HttpResponse::Code() const{
 
 }
 void HttpResponse::AddStateLine(Buffer &buff){
-
+    std::string status;
+    if(CODE_STATUS.count(code) == 1){
+        status = CODE_STATUS.find(code)->second;
+    }else{
+        code = 400;
+        status =CODE_STATUS.find(400)->second;
+    }
+    buff.Append("HTTP/1.1"+std::to_string(code)+""+status+"\r\n");
 }
 void HttpResponse::AddHeader(Buffer &buff){
+    buff.Append("Connection: ");
+    if(isKeepAlive){
+        buff.Append("keep-alive\r\n");
+        buff.Append("keep-alive: max=6, timeout=120\r\n");
 
+    }else{
+        buff.Append("close\r\n");
+    }
+    buff.Append("Content-type: " + GetFileType() + "\r\n");
 }
 void HttpResponse::AddContent(Buffer &buff){
+    int srcFd = open((srcDir + path).data(), O_RDONLY);
+    if(srcFd < 0) { 
+        ErrorContent(buff, "File NotFound!");
+        return; 
+    }
+    /* 将文件映射到内存提高文件的访问速度 
+        MAP_PRIVATE 建立一个写入时拷贝的私有映射*/
+    LOG_DEBUG("file path %s", (srcDir + path).data());
+    int* mmRet = (int*)mmap(0, mmFileStat.st_size, PROT_READ, MAP_PRIVATE, srcFd, 0);
+    if(*mmRet == -1) {
+        ErrorContent(buff, "File NotFound!");
+        return; 
+    }
+    mmFile = (char*)mmRet;
+    close(srcFd);
+    buff.Append("Content-length: " + std::to_string(mmFileStat.st_size) + "\r\n\r\n");
 
 }
 
 void HttpResponse::ErrorHtml(){
-
+    if(CODE_PATH.count(code) == 1){
+        path = CODE_PATH.find(code)->second;
+        stat((srcDir+path).data(),&mmFileStat);
+    }
 }
 std::string HttpResponse::GetFileType(){
     

@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <sys/mman.h>    // mmap, munmap
 #include "sys/stat.h"
+#include <fcntl.h>
+#include "../log/log.h"
 class HttpResponse{
 public:
     HttpResponse();
