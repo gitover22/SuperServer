@@ -42,3 +42,35 @@ Server::Server(int port_num,int trigger_mode,int timeout,
     }
 
 }
+Server::~Server(){
+    close(listenFd);
+    isClose =true;
+    free(srcDir);
+    SqlConnPool::Instance()->ClosePool(); // 关闭数据库连接池
+}
+
+
+void Server::Init_EventMode(int trigMode) {
+    listenEvent = EPOLLRDHUP;
+    connEvent = EPOLLONESHOT | EPOLLRDHUP;
+    switch (trigMode)
+    {
+    case 0:
+        break;
+    case 1:
+        connEvent |= EPOLLET;
+        break;
+    case 2:
+        listenEvent |= EPOLLET;
+        break;
+    case 3:
+        listenEvent |= EPOLLET;
+        connEvent |= EPOLLET;
+        break;
+    default:
+        listenEvent |= EPOLLET;
+        connEvent |= EPOLLET;
+        break;
+    }
+    HttpConn::isET = (connEvent & EPOLLET);
+}
