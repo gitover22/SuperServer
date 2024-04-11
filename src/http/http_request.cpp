@@ -34,7 +34,9 @@ bool HttpRequest::parse(Buffer& buff){
         // 根据state调用相应的处理函数
         switch(state_){
             case REQUEST_LINE:
+                printf("\n=======http_request.cpp:37======\n");
                 if(!ParseRequestLine_(line)){
+                printf("\n=======http_request.cpp:39======\n");
                     return false;
                 }
                 ParsePath_();
@@ -101,7 +103,7 @@ bool HttpRequest::ParseRequestLine_(const std::string& line){
         path_ = subMatch[2];
         version_ = subMatch[3];
         state_=HEADERS;
-        return false;
+        return true;
     }
     LOG_ERROR("ParseRequestLine Error");
     return false;
