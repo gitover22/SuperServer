@@ -3,11 +3,11 @@
 
 
 #include <netinet/in.h>
+#include <arpa/inet.h>   // sockaddr_in
 #include "../buffer/buffer.h"
 #include "./http_request.h"
 #include "./http_response.h"
 #include "../log/log.h"
-#include <arpa/inet.h>   // sockaddr_in
 
 class HttpConn{
 public:

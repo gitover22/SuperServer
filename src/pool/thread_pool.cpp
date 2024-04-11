@@ -1,5 +1,5 @@
 #include "thread_pool.h"
-ThreadPool::ThreadPool(size_t threadCount = 8):pool_(std::make_shared<Pool>()){
+ThreadPool::ThreadPool(size_t threadCount):pool_(std::make_shared<Pool>()){
     assert(threadCount > 0 );
     for(size_t i=0;i<threadCount;i++){
         std::thread([pool = pool_]{
@@ -30,7 +30,7 @@ ThreadPool::~ThreadPool(){
 }
 
 template<typename T>
-void ThreadPool::AddTask<T>(T&& task){
+void ThreadPool::AddTask(T&& task){
     {
         std::lock_guard<std::mutex> locker(pool_->mtx);
         pool_->tasks.emplace(std::forward<T>(task));

@@ -1,7 +1,7 @@
 #ifndef SQLCONNRAII_H
 #define SQLCONNRAII_H
-#include "sqlconnpool.h"
 #include <assert.h>
+#include "sqlconnpool.h"
 class SqlConnRAII{
 public: 
     SqlConnRAII(MYSQL** sql,SqlConnPool *connpool){

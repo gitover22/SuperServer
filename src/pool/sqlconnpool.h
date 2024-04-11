@@ -1,10 +1,10 @@
 #ifndef SQLCONNPOOL_H
 #define SQLCONNPOOL_H
 
-#include <mysql/mysql.h>
-#include <semaphore.h>
 #include <queue>
 #include <mutex>
+#include <mysql/mysql.h>
+#include <semaphore.h>
 #include "../log/log.h"
 class SqlConnPool{
 public:

@@ -1,13 +1,13 @@
 #ifndef HTTP_RESPONSE_H
 #define HTTP_RESPONSE_H
-#include <bits/struct_stat.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <string>
-#include "../buffer/buffer.h"
 #include <unordered_map>
 #include <sys/mman.h>    // mmap, munmap
 #include "sys/stat.h"
-#include <fcntl.h>
 #include "../log/log.h"
+#include "../buffer/buffer.h"
 class HttpResponse{
 public:
     HttpResponse();

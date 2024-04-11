@@ -240,3 +240,8 @@ bool HttpRequest::UserVerify(const std::string& name, const std::string& pwd, bo
     LOG_DEBUG( "UserVerify success!!");
     return flag;
 }
+int HttpRequest::ConverHex(char ch) {
+    if(ch >= 'A' && ch <= 'F') return ch -'A' + 10;
+    if(ch >= 'a' && ch <= 'f') return ch -'a' + 10;
+    return ch;
+}

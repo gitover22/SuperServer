@@ -35,7 +35,7 @@ add_executable(${PROJECT_NAME}
     ${PROJECT_SOURCE_DIR}/src/http/http_conn.cpp
     ${PROJECT_SOURCE_DIR}/src/http/http_request.cpp
     ${PROJECT_SOURCE_DIR}/src/http/http_response.cpp
-    ${PROJECT_SOURCE_DIR}/src/log/block_queue.cpp
+    # ${PROJECT_SOURCE_DIR}/src/log/block_queue.cpp
     ${PROJECT_SOURCE_DIR}/src/log/log.cpp
     ${PROJECT_SOURCE_DIR}/src/pool/sqlconnpool.cpp
     ${PROJECT_SOURCE_DIR}/src/pool/thread_pool.cpp

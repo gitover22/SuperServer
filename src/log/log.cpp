@@ -34,7 +34,8 @@ void Log::SetLevel(int level){
     std::lock_guard<std::mutex> locker(mtx);
     this->level = level;
 }
-void Log::init(int level,const char* path="./log",const char* suffix=".log",int maxQueueCapacity = 1024){
+// 默认参数只需要在函数声明时添加
+void Log::init(int level,const char* path,const char* suffix,int maxQueueCapacity){
     isOpen = true;
     this->level =level;
     if(maxQueueCapacity >0){
@@ -162,4 +163,8 @@ Log* Log::Instance(){
 
 void Log::FlushLogThread(){
     Log::Instance()->AsyncWrite();
+}
+
+bool Log::IsOpen(){
+    return isOpen;
 }

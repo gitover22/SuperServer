@@ -128,7 +128,7 @@ void Server::Add_Client(int fd, sockaddr_in addr) {
     assert(fd > 0);
     users[fd].init(fd, addr);
     if(_timeout > 0) {
-        timer->add(fd, _timeout, std::bind(&Server::Close_Conn, this, &users[fd]));
+        timer->add(fd, _timeout, std::bind(&Server::Close_Conn, this,&users[fd]) );
     }
     epoller->AddFd(fd, EPOLLIN | connEvent);
     Set_fd_Nonblock(fd);

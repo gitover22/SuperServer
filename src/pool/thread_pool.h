@@ -1,10 +1,10 @@
 #ifndef THREAD_POOL_H
 #define THREAD_POOL_H
-#include <assert.h>
 #include<mutex>
 #include<queue>
 #include<functional>
 #include<thread>
+#include<assert.h>
 #include<condition_variable>
 class ThreadPool{
 public:
@@ -12,7 +12,8 @@ public:
     ThreadPool() = default;
     ThreadPool(ThreadPool&&) = default;
     ~ThreadPool();
-    template<typename F> void AddTask(F&& task);
+    template<typename T>
+    void AddTask(T&& task);
 private:
     struct Pool{
         std::mutex mtx;

@@ -113,3 +113,10 @@ bool HttpConn::process() {
     LOG_DEBUG("filesize:%d, %d  to %d", response.FileLen() , iovCnt, ToWriteBytes());
     return true;
 }
+ int HttpConn::ToWriteBytes() { 
+        return iov[0].iov_len + iov[1].iov_len; 
+    }
+
+bool HttpConn::IsKeepAlive() const {
+    return request.IsKeepAlive();
+}
