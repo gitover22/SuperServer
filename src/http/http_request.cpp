@@ -124,6 +124,7 @@ void HttpRequest::ParseBody_(const std::string& line){
 
 void HttpRequest::ParsePath_(){
     if(path_ == "/"){
+        printf("============http_request.cpp:127\n");
         path_ ="/index.html"; //用户第一次进入页面，导向index.html
     }else{
         for(auto &item:DEFAULT_HTML){
