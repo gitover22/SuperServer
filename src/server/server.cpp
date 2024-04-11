@@ -134,7 +134,41 @@ void Server::Add_Client(int fd, sockaddr_in addr) {
     Set_fd_Nonblock(fd);
     LOG_INFO("Client[%d] in!", users[fd].GetFd());
 }
+
 int Server::Set_fd_Nonblock(int fd) {
     assert(fd > 0);
     return fcntl(fd, F_SETFL, fcntl(fd, F_GETFD, 0) | O_NONBLOCK);
+}
+
+void Server::Deal_Listen(){
+    struct sockaddr_in addr;
+    socklen_t len = sizeof(addr);
+    do{
+        int fd = accept(listenFd, (struct sockaddr *)&addr, &len);
+        if(fd <= 0) { return;}
+        else if(HttpConn::userCount >= MAX_FD) {
+            Send_Error(fd, "Server busy!");
+            LOG_WARN("Clients is full!");
+            return;
+        }
+        Add_Client(fd, addr);
+    }while(listenEvent & EPOLLET);
+}
+
+void Server::Deal_Read(HttpConn* client) {
+    assert(client);
+    Extent_Time(client);
+    threadpool->AddTask(std::bind(&Server::On_Read, this, client));
+}
+void Server::Deal_Write(HttpConn* client) {
+    assert(client);
+    Extent_Time(client);
+    threadpool->AddTask(std::bind(&Server::On_Write, this, client));
+}
+
+void Server::Extent_Time(HttpConn *client){
+    assert(client);
+    if(_timeout > 0) {
+        timer->adjust(client->GetFd(),_timeout);
+    }
 }
