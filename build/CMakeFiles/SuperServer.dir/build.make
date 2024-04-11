@@ -139,24 +139,10 @@ CMakeFiles/SuperServer.dir/src/http/http_response.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SuperServer.dir/src/http/http_response.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/huafeng/SuperServer/src/http/http_response.cpp -o CMakeFiles/SuperServer.dir/src/http/http_response.cpp.s
 
-CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.o: CMakeFiles/SuperServer.dir/flags.make
-CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.o: ../src/log/block_queue.cpp
-CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.o: CMakeFiles/SuperServer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/huafeng/SuperServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.o -MF CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.o.d -o CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.o -c /home/huafeng/SuperServer/src/log/block_queue.cpp
-
-CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/huafeng/SuperServer/src/log/block_queue.cpp > CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.i
-
-CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/huafeng/SuperServer/src/log/block_queue.cpp -o CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.s
-
 CMakeFiles/SuperServer.dir/src/log/log.cpp.o: CMakeFiles/SuperServer.dir/flags.make
 CMakeFiles/SuperServer.dir/src/log/log.cpp.o: ../src/log/log.cpp
 CMakeFiles/SuperServer.dir/src/log/log.cpp.o: CMakeFiles/SuperServer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/huafeng/SuperServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/SuperServer.dir/src/log/log.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/huafeng/SuperServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/SuperServer.dir/src/log/log.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SuperServer.dir/src/log/log.cpp.o -MF CMakeFiles/SuperServer.dir/src/log/log.cpp.o.d -o CMakeFiles/SuperServer.dir/src/log/log.cpp.o -c /home/huafeng/SuperServer/src/log/log.cpp
 
 CMakeFiles/SuperServer.dir/src/log/log.cpp.i: cmake_force
@@ -170,7 +156,7 @@ CMakeFiles/SuperServer.dir/src/log/log.cpp.s: cmake_force
 CMakeFiles/SuperServer.dir/src/pool/sqlconnpool.cpp.o: CMakeFiles/SuperServer.dir/flags.make
 CMakeFiles/SuperServer.dir/src/pool/sqlconnpool.cpp.o: ../src/pool/sqlconnpool.cpp
 CMakeFiles/SuperServer.dir/src/pool/sqlconnpool.cpp.o: CMakeFiles/SuperServer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/huafeng/SuperServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/SuperServer.dir/src/pool/sqlconnpool.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/huafeng/SuperServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/SuperServer.dir/src/pool/sqlconnpool.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SuperServer.dir/src/pool/sqlconnpool.cpp.o -MF CMakeFiles/SuperServer.dir/src/pool/sqlconnpool.cpp.o.d -o CMakeFiles/SuperServer.dir/src/pool/sqlconnpool.cpp.o -c /home/huafeng/SuperServer/src/pool/sqlconnpool.cpp
 
 CMakeFiles/SuperServer.dir/src/pool/sqlconnpool.cpp.i: cmake_force
@@ -184,7 +170,7 @@ CMakeFiles/SuperServer.dir/src/pool/sqlconnpool.cpp.s: cmake_force
 CMakeFiles/SuperServer.dir/src/pool/thread_pool.cpp.o: CMakeFiles/SuperServer.dir/flags.make
 CMakeFiles/SuperServer.dir/src/pool/thread_pool.cpp.o: ../src/pool/thread_pool.cpp
 CMakeFiles/SuperServer.dir/src/pool/thread_pool.cpp.o: CMakeFiles/SuperServer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/huafeng/SuperServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/SuperServer.dir/src/pool/thread_pool.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/huafeng/SuperServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/SuperServer.dir/src/pool/thread_pool.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SuperServer.dir/src/pool/thread_pool.cpp.o -MF CMakeFiles/SuperServer.dir/src/pool/thread_pool.cpp.o.d -o CMakeFiles/SuperServer.dir/src/pool/thread_pool.cpp.o -c /home/huafeng/SuperServer/src/pool/thread_pool.cpp
 
 CMakeFiles/SuperServer.dir/src/pool/thread_pool.cpp.i: cmake_force
@@ -198,7 +184,7 @@ CMakeFiles/SuperServer.dir/src/pool/thread_pool.cpp.s: cmake_force
 CMakeFiles/SuperServer.dir/src/server/epoller.cpp.o: CMakeFiles/SuperServer.dir/flags.make
 CMakeFiles/SuperServer.dir/src/server/epoller.cpp.o: ../src/server/epoller.cpp
 CMakeFiles/SuperServer.dir/src/server/epoller.cpp.o: CMakeFiles/SuperServer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/huafeng/SuperServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/SuperServer.dir/src/server/epoller.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/huafeng/SuperServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/SuperServer.dir/src/server/epoller.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SuperServer.dir/src/server/epoller.cpp.o -MF CMakeFiles/SuperServer.dir/src/server/epoller.cpp.o.d -o CMakeFiles/SuperServer.dir/src/server/epoller.cpp.o -c /home/huafeng/SuperServer/src/server/epoller.cpp
 
 CMakeFiles/SuperServer.dir/src/server/epoller.cpp.i: cmake_force
@@ -212,7 +198,7 @@ CMakeFiles/SuperServer.dir/src/server/epoller.cpp.s: cmake_force
 CMakeFiles/SuperServer.dir/src/server/server.cpp.o: CMakeFiles/SuperServer.dir/flags.make
 CMakeFiles/SuperServer.dir/src/server/server.cpp.o: ../src/server/server.cpp
 CMakeFiles/SuperServer.dir/src/server/server.cpp.o: CMakeFiles/SuperServer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/huafeng/SuperServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/SuperServer.dir/src/server/server.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/huafeng/SuperServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/SuperServer.dir/src/server/server.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SuperServer.dir/src/server/server.cpp.o -MF CMakeFiles/SuperServer.dir/src/server/server.cpp.o.d -o CMakeFiles/SuperServer.dir/src/server/server.cpp.o -c /home/huafeng/SuperServer/src/server/server.cpp
 
 CMakeFiles/SuperServer.dir/src/server/server.cpp.i: cmake_force
@@ -226,7 +212,7 @@ CMakeFiles/SuperServer.dir/src/server/server.cpp.s: cmake_force
 CMakeFiles/SuperServer.dir/src/time/heap_timer.cpp.o: CMakeFiles/SuperServer.dir/flags.make
 CMakeFiles/SuperServer.dir/src/time/heap_timer.cpp.o: ../src/time/heap_timer.cpp
 CMakeFiles/SuperServer.dir/src/time/heap_timer.cpp.o: CMakeFiles/SuperServer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/huafeng/SuperServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/SuperServer.dir/src/time/heap_timer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/huafeng/SuperServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/SuperServer.dir/src/time/heap_timer.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SuperServer.dir/src/time/heap_timer.cpp.o -MF CMakeFiles/SuperServer.dir/src/time/heap_timer.cpp.o.d -o CMakeFiles/SuperServer.dir/src/time/heap_timer.cpp.o -c /home/huafeng/SuperServer/src/time/heap_timer.cpp
 
 CMakeFiles/SuperServer.dir/src/time/heap_timer.cpp.i: cmake_force
@@ -244,7 +230,6 @@ SuperServer_OBJECTS = \
 "CMakeFiles/SuperServer.dir/src/http/http_conn.cpp.o" \
 "CMakeFiles/SuperServer.dir/src/http/http_request.cpp.o" \
 "CMakeFiles/SuperServer.dir/src/http/http_response.cpp.o" \
-"CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.o" \
 "CMakeFiles/SuperServer.dir/src/log/log.cpp.o" \
 "CMakeFiles/SuperServer.dir/src/pool/sqlconnpool.cpp.o" \
 "CMakeFiles/SuperServer.dir/src/pool/thread_pool.cpp.o" \
@@ -260,7 +245,6 @@ bin/SuperServer: CMakeFiles/SuperServer.dir/src/buffer/buffer.cpp.o
 bin/SuperServer: CMakeFiles/SuperServer.dir/src/http/http_conn.cpp.o
 bin/SuperServer: CMakeFiles/SuperServer.dir/src/http/http_request.cpp.o
 bin/SuperServer: CMakeFiles/SuperServer.dir/src/http/http_response.cpp.o
-bin/SuperServer: CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.o
 bin/SuperServer: CMakeFiles/SuperServer.dir/src/log/log.cpp.o
 bin/SuperServer: CMakeFiles/SuperServer.dir/src/pool/sqlconnpool.cpp.o
 bin/SuperServer: CMakeFiles/SuperServer.dir/src/pool/thread_pool.cpp.o
@@ -269,7 +253,7 @@ bin/SuperServer: CMakeFiles/SuperServer.dir/src/server/server.cpp.o
 bin/SuperServer: CMakeFiles/SuperServer.dir/src/time/heap_timer.cpp.o
 bin/SuperServer: CMakeFiles/SuperServer.dir/build.make
 bin/SuperServer: CMakeFiles/SuperServer.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/huafeng/SuperServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX executable bin/SuperServer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/huafeng/SuperServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable bin/SuperServer"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SuperServer.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -24,5 +24,13 @@ private:
     std::shared_ptr<struct Pool> pool_;
     
 };
+template<typename T>
+void ThreadPool::AddTask(T&& task){
+    {
+        std::lock_guard<std::mutex> locker(pool_->mtx);
+        pool_->tasks.emplace(std::forward<T>(task));
 
+    }
+    pool_->cond.notify_one();
+}
 #endif

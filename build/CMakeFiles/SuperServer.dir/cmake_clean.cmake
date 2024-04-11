@@ -7,8 +7,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/SuperServer.dir/src/http/http_request.cpp.o.d"
   "CMakeFiles/SuperServer.dir/src/http/http_response.cpp.o"
   "CMakeFiles/SuperServer.dir/src/http/http_response.cpp.o.d"
-  "CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.o"
-  "CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.o.d"
   "CMakeFiles/SuperServer.dir/src/log/log.cpp.o"
   "CMakeFiles/SuperServer.dir/src/log/log.cpp.o.d"
   "CMakeFiles/SuperServer.dir/src/main/runner.cpp.o"

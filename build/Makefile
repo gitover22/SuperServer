@@ -225,30 +225,6 @@ src/http/http_response.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SuperServer.dir/build.make CMakeFiles/SuperServer.dir/src/http/http_response.cpp.s
 .PHONY : src/http/http_response.cpp.s
 
-src/log/block_queue.o: src/log/block_queue.cpp.o
-.PHONY : src/log/block_queue.o
-
-# target to build an object file
-src/log/block_queue.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SuperServer.dir/build.make CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.o
-.PHONY : src/log/block_queue.cpp.o
-
-src/log/block_queue.i: src/log/block_queue.cpp.i
-.PHONY : src/log/block_queue.i
-
-# target to preprocess a source file
-src/log/block_queue.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SuperServer.dir/build.make CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.i
-.PHONY : src/log/block_queue.cpp.i
-
-src/log/block_queue.s: src/log/block_queue.cpp.s
-.PHONY : src/log/block_queue.s
-
-# target to generate assembly for a file
-src/log/block_queue.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SuperServer.dir/build.make CMakeFiles/SuperServer.dir/src/log/block_queue.cpp.s
-.PHONY : src/log/block_queue.cpp.s
-
 src/log/log.o: src/log/log.cpp.o
 .PHONY : src/log/log.o
 
@@ -438,9 +414,6 @@ help:
 	@echo "... src/http/http_response.o"
 	@echo "... src/http/http_response.i"
 	@echo "... src/http/http_response.s"
-	@echo "... src/log/block_queue.o"
-	@echo "... src/log/block_queue.i"
-	@echo "... src/log/block_queue.s"
 	@echo "... src/log/log.o"
 	@echo "... src/log/log.i"
 	@echo "... src/log/log.s"

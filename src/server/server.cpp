@@ -11,9 +11,9 @@ Server::Server(int port_num,int trigger_mode,int timeout,
            port_(port_num),openLinger(quit_mode),_timeout(timeout),isClose(false),
            timer(new HeapTimer()),threadpool(new ThreadPool(thread_pool_num)),epoller(new Epoller())
 {
-    srcDir = getcwd(nullptr,256);
+    srcDir = (char *)malloc(sizeof("/home/huafeng/SuperServer/web/")+8);;
+    strcpy(srcDir,"/home/huafeng/SuperServer/web/");
     assert(srcDir);
-    strncat(srcDir,"/web/",16); // 拼接
     HttpConn::userCount = 0;
     // http前端的路径
     HttpConn::srcDir =this->srcDir;

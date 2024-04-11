@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <string>
+#include<iostream>
 #include <unordered_map>
 #include <sys/mman.h>    // mmap, munmap
 #include "sys/stat.h"

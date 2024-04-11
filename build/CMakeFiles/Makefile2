@@ -81,12 +81,12 @@ clean: CMakeFiles/SuperServer.dir/clean
 CMakeFiles/SuperServer.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SuperServer.dir/build.make CMakeFiles/SuperServer.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SuperServer.dir/build.make CMakeFiles/SuperServer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/huafeng/SuperServer/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13 "Built target SuperServer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/huafeng/SuperServer/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12 "Built target SuperServer"
 .PHONY : CMakeFiles/SuperServer.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/SuperServer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/huafeng/SuperServer/build/CMakeFiles 13
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/huafeng/SuperServer/build/CMakeFiles 12
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/SuperServer.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/huafeng/SuperServer/build/CMakeFiles 0
 .PHONY : CMakeFiles/SuperServer.dir/rule

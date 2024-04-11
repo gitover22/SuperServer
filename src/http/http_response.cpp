@@ -46,13 +46,13 @@ HttpResponse::~HttpResponse(){
     UnmapFile();    
 }
 
-void HttpResponse::Init(const std::string& strDir,std::string& path,bool isKeepAlive,int code ){
-    assert(srcDir !="");
+void HttpResponse::Init(const std::string& src_Dir,std::string& path,bool isKeepAlive,int code ){
+    assert(src_Dir !="");
     if(mmFile) UnmapFile();
     this->code =code;
     this->isKeepAlive = isKeepAlive;
     this->path =path;
-    this->srcDir =srcDir;
+    this->srcDir =src_Dir;
     this->mmFile =nullptr;
     this->mmFileStat = {0};
 }
@@ -125,6 +125,7 @@ void HttpResponse::AddHeader(Buffer &buff){
 void HttpResponse::AddContent(Buffer &buff){
     int srcFd = open((srcDir + path).data(), O_RDONLY);
     if(srcFd < 0) { 
+        std::cout<<"error here"<<std::endl;
         ErrorContent(buff, "File NotFound!");
         return; 
     }
