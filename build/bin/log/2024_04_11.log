@@ -1,7 +1,0 @@
-2024-04-11 11:17:21.641464 [info] : =========init success=======
-2024-04-11 11:17:21.641484 [info] : Port:1618, OpenLinger: false
-2024-04-11 11:17:21.641486 [info] : Listen Mode: ET, OpenConn Mode: ET
-2024-04-11 11:17:21.641488 [info] : LogSys level: 1
-2024-04-11 11:17:21.641489 [info] : srcDir: /home/huafeng/SuperServer/build/bin/web/
-2024-04-11 11:17:21.641539 [info] : SqlConnPool num: 10, ThreadPool num: 10
-2024-04-11 11:17:21.641625 [info] : ========== Server start ==========
