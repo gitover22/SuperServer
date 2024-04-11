@@ -1,7 +1,6 @@
 #include "sqlconnpool.h"
 
 
-
 SqlConnPool *SqlConnPool::Instance(){
     // 单例模式
     static SqlConnPool connPool;

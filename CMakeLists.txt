@@ -1,4 +1,3 @@
-
 # minimum version of CMake required
 cmake_minimum_required(VERSION 3.10)
 
@@ -17,9 +16,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wall -g")
 
 # Set the output directory for binary files and ensure it exists
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/build/bin)
-file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}) # 确保存在/build/bin目录
+file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
-# Include directories 向项目添加头文件搜索路径
+# Include directories
 include_directories(${PROJECT_SOURCE_DIR}/src/buffer)
 include_directories(${PROJECT_SOURCE_DIR}/src/http)
 include_directories(${PROJECT_SOURCE_DIR}/src/log)
