@@ -172,3 +172,104 @@ void Server::Extent_Time(HttpConn *client){
         timer->adjust(client->GetFd(),_timeout);
     }
 }
+
+void Server::On_Read(HttpConn* client) {
+    assert(client);
+    int ret = -1;
+    int readErrno = 0;
+    ret = client->read(&readErrno);
+    if(ret <= 0 && readErrno != EAGAIN) {
+        Close_Conn(client);
+        return;
+    }
+    On_Process(client);
+}
+
+void Server::On_Process(HttpConn* client) {
+    if(client->process()) {
+        epoller->ModFd(client->GetFd(), connEvent | EPOLLOUT);
+    } else {
+        epoller->ModFd(client->GetFd(), connEvent | EPOLLIN);
+    }
+}
+
+void Server::On_Write(HttpConn* client) {
+    assert(client);
+    int ret = -1;
+    int writeErrno = 0;
+    ret = client->write(&writeErrno);
+    if(client->ToWriteBytes() == 0) {
+        /* 传输完成 */
+        if(client->IsKeepAlive()) {
+            On_Process(client);
+            return;
+        }
+    }
+    else if(ret < 0) {
+        if(writeErrno == EAGAIN) {
+            /* 继续传输 */
+            epoller->ModFd(client->GetFd(), connEvent | EPOLLOUT);
+            return;
+        }
+    }
+    Close_Conn(client);
+}
+
+bool Server::Init_Socket(){
+    int ret;
+    struct sockaddr_in addr;
+    if(port_ >65535 || port_ <1024){
+        LOG_ERROR("Port:%d error!",port_);
+        return false;
+    }
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr =htonl(INADDR_ANY);
+    addr.sin_port =htons(port_);
+    struct linger optLinger ={0};
+    if(openLinger){
+        //优雅关闭 所剩数据发送完毕或超时
+        optLinger.l_onoff = 1;
+        optLinger.l_linger = 1;
+    }
+    listenFd =socket(AF_INET,SOCK_STREAM,0);
+    if(listenFd < 0){
+        LOG_ERROR("CREATE socket error!",port_);
+        return false;
+    }
+    ret =setsockopt(listenFd,SOL_SOCKET,SO_LINGER,&optLinger,sizeof(optLinger));
+    if(ret < 0){
+        close(listenFd);
+        LOG_ERROR("init linger error!");
+        return false;
+    }
+    int optval = 1;
+    // 端口复用
+    ret = setsockopt(listenFd,SOL_SOCKET,SO_REUSEADDR,(const void *)&optval,sizeof(int));
+    if(ret == -1){
+        LOG_ERROR("setsocketopt error!");
+        close(listenFd);
+        return false;
+    }
+    ret = bind(listenFd,(struct sockaddr *)&addr,sizeof(addr));
+    if(ret < 0){
+        LOG_ERROR("bind port:%d error!",port_);
+        close(listenFd);
+        return false;
+    }
+    ret = listen(listenFd, 6);
+    if(ret < 0) {
+        LOG_ERROR("Listen port:%d error!", port_);
+        close(listenFd);
+        return false;
+    }
+    // 向epoll注册监听事件
+    ret = epoller->AddFd(listenFd,  listenEvent | EPOLLIN);
+    if(ret == 0) {
+        LOG_ERROR("Add listen error!");
+        close(listenFd);
+        return false;
+    }
+    Set_fd_Nonblock(listenFd);
+    LOG_INFO("Server port:%d", port_);
+    return true;
+}
