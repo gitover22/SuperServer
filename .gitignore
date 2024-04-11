@@ -1,3 +1,4 @@
-./.vscode
-./push.sh
-./build/*
+.vscode
+push.sh
+build/
+log/
