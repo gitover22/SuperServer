@@ -105,9 +105,9 @@ private:
 
     static const int MAX_FD = 65536;
 
-    int port_;
+    int server_port;
     bool openLinger;
-    int _timeout;  // 毫秒
+    int timeout;  // 毫秒
     bool isClose;
     int listenFd;
     char* srcDir;
@@ -116,7 +116,7 @@ private:
     uint32_t connEvent;
    
     std::unique_ptr<HeapTimer> timer;
-    std::unique_ptr<ThreadPool> threadpool;
+    std::unique_ptr<ThreadPool> thread_pool;
     std::unique_ptr<Epoller> epoller;
     std::unordered_map<int, HttpConn> users; // 存储连接的客户
 };

@@ -34,9 +34,7 @@ bool HttpRequest::parse(Buffer& buff){
         // 根据state调用相应的处理函数
         switch(state_){
             case REQUEST_LINE:
-                printf("\n=======http_request.cpp:37======\n");
                 if(!ParseRequestLine_(line)){
-                printf("\n=======http_request.cpp:39======\n");
                     return false;
                 }
                 ParsePath_();

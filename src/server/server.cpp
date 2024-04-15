@@ -4,14 +4,14 @@
 
 #include "server.h"
 
-Server::Server(int port_num,int trigger_mode,int timeout,
+Server::Server(int port_num,int trigger_mode,int time,
            bool quit_mode,int mysql_port,const char* mysql_user_name,
            const char* mysql_pwd,const char* db_name,int connect_pool_num,
            int thread_pool_num,bool open_log,int log_level,int log_queue_size):
-           port_(port_num),openLinger(quit_mode),_timeout(timeout),isClose(false),
-           timer(new HeapTimer()),threadpool(new ThreadPool(thread_pool_num)),epoller(new Epoller())
+           server_port(port_num),openLinger(quit_mode),timeout(time),isClose(false),
+           timer(new HeapTimer()),thread_pool(new ThreadPool(thread_pool_num)),epoller(new Epoller())
 {
-    srcDir = (char *)malloc(sizeof("/home/huafeng/SuperServer/web/")+8);;
+    srcDir = (char *)malloc(sizeof("/home/huafeng/SuperServer/web/")+8);
     strcpy(srcDir,"/home/huafeng/SuperServer/web/");
     assert(srcDir);
     HttpConn::userCount = 0;
@@ -30,7 +30,7 @@ Server::Server(int port_num,int trigger_mode,int timeout,
             LOG_ERROR("=====init log error");
         }else{
             LOG_INFO("=========init success=======");
-            LOG_INFO("Port:%d, OpenLinger: %s", port_, quit_mode? "true":"false");
+            LOG_INFO("Port:%d, OpenLinger: %s", server_port, quit_mode? "true":"false");
             LOG_INFO("Listen Mode: %s, OpenConn Mode: %s",
                             (listenEvent & EPOLLET ? "ET": "LT"),
                             (connEvent & EPOLLET ? "ET": "LT"));
@@ -79,7 +79,7 @@ void Server::Start() {
     int timeMS = -1;  /* epoll wait timeout == -1 无事件将阻塞 */
     if(!isClose) { LOG_INFO("========== Server start =========="); }
     while(!isClose) {
-        if(_timeout > 0) {
+        if(timeout > 0) {
             timeMS = timer->GetNextTick();
         }
         // 等待事件   标准的epoll处理流程
@@ -127,8 +127,8 @@ void Server::Close_Conn(HttpConn* client) {
 void Server::Add_Client(int fd, sockaddr_in addr) {
     assert(fd > 0);
     users[fd].init(fd, addr);
-    if(_timeout > 0) {
-        timer->add(fd, _timeout, std::bind(&Server::Close_Conn, this,&users[fd]) );
+    if(timeout > 0) {
+        timer->add(fd, timeout, std::bind(&Server::Close_Conn, this,&users[fd]) );
     }
     epoller->AddFd(fd, EPOLLIN | connEvent);
     Set_fd_Nonblock(fd);
@@ -158,18 +158,18 @@ void Server::Deal_Listen(){
 void Server::Deal_Read(HttpConn* client) {
     assert(client);
     Extent_Time(client);
-    threadpool->AddTask(std::bind(&Server::On_Read, this, client));
+    thread_pool->AddTask(std::bind(&Server::On_Read, this, client));
 }
 void Server::Deal_Write(HttpConn* client) {
     assert(client);
     Extent_Time(client);
-    threadpool->AddTask(std::bind(&Server::On_Write, this, client));
+    thread_pool->AddTask(std::bind(&Server::On_Write, this, client));
 }
 
 void Server::Extent_Time(HttpConn *client){
     assert(client);
-    if(_timeout > 0) {
-        timer->adjust(client->GetFd(),_timeout);
+    if(timeout > 0) {
+        timer->adjust(client->GetFd(),timeout);
     }
 }
 
@@ -218,13 +218,13 @@ void Server::On_Write(HttpConn* client) {
 bool Server::Init_Socket(){
     int ret;
     struct sockaddr_in addr;
-    if(port_ >65535 || port_ <1024){
-        LOG_ERROR("Port:%d error!",port_);
+    if(server_port >65535 || server_port <1024){
+        LOG_ERROR("Port:%d error!",server_port);
         return false;
     }
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr =htonl(INADDR_ANY);
-    addr.sin_port =htons(port_);
+    addr.sin_port =htons(server_port);
     struct linger optLinger ={0};
     if(openLinger){
         //优雅关闭 所剩数据发送完毕或超时
@@ -233,7 +233,7 @@ bool Server::Init_Socket(){
     }
     listenFd =socket(AF_INET,SOCK_STREAM,0);
     if(listenFd < 0){
-        LOG_ERROR("CREATE socket error!",port_);
+        LOG_ERROR("CREATE socket error!",server_port);
         return false;
     }
     ret =setsockopt(listenFd,SOL_SOCKET,SO_LINGER,&optLinger,sizeof(optLinger));
@@ -252,13 +252,13 @@ bool Server::Init_Socket(){
     }
     ret = bind(listenFd,(struct sockaddr *)&addr,sizeof(addr));
     if(ret < 0){
-        LOG_ERROR("bind port:%d error!",port_);
+        LOG_ERROR("bind port:%d error!",server_port);
         close(listenFd);
         return false;
     }
     ret = listen(listenFd, 6);
     if(ret < 0) {
-        LOG_ERROR("Listen port:%d error!", port_);
+        LOG_ERROR("Listen port:%d error!", server_port);
         close(listenFd);
         return false;
     }
@@ -270,6 +270,6 @@ bool Server::Init_Socket(){
         return false;
     }
     Set_fd_Nonblock(listenFd);
-    LOG_INFO("Server port:%d", port_);
+    LOG_INFO("Server port:%d", server_port);
     return true;
 }
