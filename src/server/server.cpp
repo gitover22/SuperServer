@@ -3,7 +3,7 @@
 */
 
 #include "server.h"
-
+char* Server::srcDir = "/home/huafeng/SuperServer/web/";
 Server::Server(int port_num,int trigger_mode,int time,
            bool quit_mode,int mysql_port,const char* mysql_user_name,
            const char* mysql_pwd,const char* db_name,int connect_pool_num,
@@ -11,8 +11,8 @@ Server::Server(int port_num,int trigger_mode,int time,
            server_port(port_num),openLinger(quit_mode),timeout(time),isClose(false),
            timer(new HeapTimer()),thread_pool(new ThreadPool(thread_pool_num)),epoller(new Epoller())
 {
-    srcDir = (char *)malloc(sizeof("/home/huafeng/SuperServer/web/")+8);
-    strcpy(srcDir,"/home/huafeng/SuperServer/web/");
+    // srcDir = (char *)malloc(sizeof("/home/huafeng/SuperServer/web/")+8);
+    // strcpy(srcDir,"/home/huafeng/SuperServer/web/");
     assert(srcDir);
     HttpConn::userCount = 0;
     // http前端的路径

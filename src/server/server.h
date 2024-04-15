@@ -107,10 +107,10 @@ private:
 
     int server_port;
     bool openLinger;
-    int timeout;  // 毫秒
+    int timeout;  // 单位：毫秒
     bool isClose;
     int listenFd;
-    char* srcDir;
+    static char* srcDir;
     
     uint32_t listenEvent;
     uint32_t connEvent;
