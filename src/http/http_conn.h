@@ -11,45 +11,38 @@
 
 class HttpConn{
 public:
-    HttpConn();
+    HttpConn();  // 构造函数
+    ~HttpConn();  // 析构函数
 
-    ~HttpConn();
+    void init(int sockFd, const sockaddr_in& addr);  // 初始化连接
 
-    void init(int sockFd,const sockaddr_in& addr);
+    ssize_t read(int* saveErrno);  // 从socket读数据
+    ssize_t write(int* saveErrno);  // 向socket写数据
 
-    ssize_t read(int* saveErrno);
+    void Close();  // 关闭连接
 
-    ssize_t write(int* saveErrno);
+    int GetFd() const;  // 获取文件描述符
+    int GetPort() const;  // 获取端口号
+    const char* GetIP() const;  // 获取IP地址
+    sockaddr_in GetAddr() const;  // 获取sockaddr_in结构
+    bool process();  // 处理读取的数据
 
-    void Close();
+    int ToWriteBytes();  // 计算待写入的字节数
+    bool IsKeepAlive() const;  // 检查连接是否保持活跃
 
-    int GetFd() const;
+    static bool isET;  // 使用边缘触发模式
+    static const char* srcDir;  // 资源目录
+    static std::atomic<int> userCount;  // 用户计数
 
-    int GetPort() const;
-
-    const char* GetIP() const;
-    sockaddr_in GetAddr() const;
-    bool process();
-
-    int ToWriteBytes();
-
-    bool IsKeepAlive() const;
-
-    static bool isET;
-    static const char* srcDir;
-    static std::atomic<int> userCount;
 private:
-    int fd;
-    struct sockaddr_in addr;
-    bool is_Close;
-    int iovCnt;
-    struct iovec iov[2];
-    // 读写缓冲
-    Buffer readBuff;
-    Buffer writeBuff; 
-    HttpRequest request;
-    HttpResponse response;
-
+    int fd;  // 文件描述符
+    struct sockaddr_in addr;  // 客户端地址
+    bool is_Close;  // 连接是否已关闭
+    int iovCnt;  // iovec数组的元素数
+    struct iovec iov[2];  // 用于写操作的iovec数组
+    Buffer readBuff;  // 读缓冲区
+    Buffer writeBuff;  // 写缓冲区
+    HttpRequest request;  // HTTP请求对象
+    HttpResponse response;  // HTTP响应对象
 };
-
 #endif

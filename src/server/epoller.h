@@ -20,8 +20,8 @@ public:
     int GetEventFd(size_t i) const;
     uint32_t GetEvents(size_t i) const;
 private:
-    int epollFd_;
-    std::vector<struct epoll_event> events_;
+    int epoll_fd; // 此epoll实体的文件描述符
+    std::vector<struct epoll_event> __events; //记录事件的容器
 
 };
 

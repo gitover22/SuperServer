@@ -8,7 +8,6 @@
 #include <cstring>
 #include <unistd.h>
 #include <sys/uio.h>
-// #include <struct_iovec.h>
 class Buffer{
 public:
     Buffer(int initBuffSize = 1024);
@@ -18,7 +17,7 @@ public:
     size_t PrependableBytes() const;
 
     const char * Peek() const;
-     void EnsureWriteable(size_t len);
+    void EnsureWriteable(size_t len);
     void HasWritten(size_t len);
 
     void Retrieve(size_t len);
@@ -43,7 +42,7 @@ private:
     const char* BeginPtr_() const;
     void MakeSpace_(size_t len);
 
-    std::vector<char> buffer_;
+    std::vector<char> buffer_; // 模拟缓冲区
 
     std::atomic<std::size_t> readPos; // 读到的位置
     std::atomic<std::size_t> writePos; // 写到的位置

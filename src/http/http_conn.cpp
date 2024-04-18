@@ -5,6 +5,7 @@
 bool HttpConn::isET;
 const char* HttpConn::srcDir;
 std::atomic<int> HttpConn::userCount;
+
 HttpConn::HttpConn(){
     fd = -1;
     addr={0};

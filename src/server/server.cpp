@@ -11,8 +11,6 @@ Server::Server(int port_num,int trigger_mode,int time,
            server_port(port_num),openLinger(quit_mode),timeout(time),isClose(false),
            timer(new HeapTimer()),thread_pool(new ThreadPool(thread_pool_num)),epoller(new Epoller())
 {
-    // srcDir = (char *)malloc(sizeof("/home/huafeng/SuperServer/web/")+8);
-    // strcpy(srcDir,"/home/huafeng/SuperServer/web/");
     assert(srcDir);
     HttpConn::userCount = 0;
     // http前端的路径

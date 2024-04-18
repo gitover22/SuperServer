@@ -107,17 +107,17 @@ private:
 
     int server_port;
     bool openLinger;
-    int timeout;  // 单位：毫秒
+    int timeout;  // 记录时间   单位：毫秒
     bool isClose;
     int listenFd;
-    static char* srcDir;
+    static char* srcDir; //web 目录的路径
     
     uint32_t listenEvent;
     uint32_t connEvent;
    
     std::unique_ptr<HeapTimer> timer;
     std::unique_ptr<ThreadPool> thread_pool;
-    std::unique_ptr<Epoller> epoller;
+    std::unique_ptr<Epoller> epoller; // epoller是指向Epoller类的指针
     std::unordered_map<int, HttpConn> users; // 存储连接的客户
 };
 
