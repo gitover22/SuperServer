@@ -48,28 +48,39 @@ Server::~Server(){
 }
 
 
+/**
+ * @brief 初始化服务器的事件模式
+ * @param trigMode 触发模式，0代表默认模式，1代表边缘触发，2代表水平触发，3代表对监听和连接都使用边缘触发
+ */
 void Server::Init_EventMode(int trigMode) {
+    // 默认的事件模式设置
     listenEvent = EPOLLRDHUP;
-    connEvent = EPOLLONESHOT | EPOLLRDHUP;
+    connEvent = EPOLLONESHOT | EPOLLRDHUP; // EPOLLONESHOT表示只监听一次事件
     switch (trigMode)
     {
     case 0:
+        // 默认模式，不修改事件模式
         break;
     case 1:
+        // 对连接事件使用边缘触发
         connEvent |= EPOLLET;
         break;
     case 2:
+        // 对监听事件使用边缘触发
         listenEvent |= EPOLLET;
         break;
     case 3:
+        // 对监听和连接事件都使用边缘触发
         listenEvent |= EPOLLET;
         connEvent |= EPOLLET;
         break;
     default:
+        // 对监听和连接事件都使用边缘触发，处理非法的trigMode值
         listenEvent |= EPOLLET;
         connEvent |= EPOLLET;
         break;
     }
+    // 标记连接是否使用边缘触发
     HttpConn::isET = (connEvent & EPOLLET);
 }
 
@@ -213,61 +224,81 @@ void Server::On_Write(HttpConn* client) {
     Close_Conn(client);
 }
 
+/**
+ * @brief 本函数用于创建并初始化服务器的Socket，设置相应的选项，并将其注册到epoll中等待监听。
+ * @return bool 返回true表示成功初始化，返回false表示初始化过程中遇到错误。
+ */
 bool Server::Init_Socket(){
     int ret;
     struct sockaddr_in addr;
+    // 检查端口号是否在有效范围内
     if(server_port >65535 || server_port <1024){
         LOG_ERROR("Port:%d error!",server_port);
         return false;
     }
+    // 设置Socket地址结构体
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr =htonl(INADDR_ANY);
     addr.sin_port =htons(server_port);
-    struct linger optLinger ={0};
+    
+    struct linger optLinger ={0};  // 初始化linger选项，用于控制Socket关闭方式
     if(openLinger){
-        //优雅关闭 所剩数据发送完毕或超时
+        // 设置为优雅关闭，确保所有数据被发送或超时
         optLinger.l_onoff = 1;
         optLinger.l_linger = 1;
     }
+    
+    // 创建Socket
     listenFd =socket(AF_INET,SOCK_STREAM,0);
     if(listenFd < 0){
         LOG_ERROR("CREATE socket error!",server_port);
         return false;
     }
+    
+    // 设置Socket选项：linger
     ret =setsockopt(listenFd,SOL_SOCKET,SO_LINGER,&optLinger,sizeof(optLinger));
     if(ret < 0){
         close(listenFd);
         LOG_ERROR("init linger error!");
         return false;
     }
+    
+    // 设置Socket选项：端口复用 以允许新的服务器进程绑定到先前使用的端口上
     int optval = 1;
-    // 端口复用
     ret = setsockopt(listenFd,SOL_SOCKET,SO_REUSEADDR,(const void *)&optval,sizeof(int));
     if(ret == -1){
         LOG_ERROR("setsocketopt error!");
         close(listenFd);
         return false;
     }
+    
+    // 绑定端口
     ret = bind(listenFd,(struct sockaddr *)&addr,sizeof(addr));
     if(ret < 0){
         LOG_ERROR("bind port:%d error!",server_port);
         close(listenFd);
         return false;
     }
+    
+    // 监听端口
     ret = listen(listenFd, 6);
     if(ret < 0) {
         LOG_ERROR("Listen port:%d error!", server_port);
         close(listenFd);
         return false;
     }
-    // 向epoll注册监听事件
+    
+    // 将监听Socket添加到epoll中
     ret = epoller->AddFd(listenFd,  listenEvent | EPOLLIN);
     if(ret == 0) {
         LOG_ERROR("Add listen error!");
         close(listenFd);
         return false;
     }
+    
+    // 设置监听Socket为非阻塞模式
     Set_fd_Nonblock(listenFd);
+    
     LOG_INFO("Server port:%d", server_port);
     return true;
 }

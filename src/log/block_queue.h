@@ -5,12 +5,10 @@
 #include <bits/std_mutex.h>
 #include <deque>
 #include <assert.h>
-// 类模板的声明和定义通常都放在.h文件中，不然编译器容易报错. 对于在.cpp文件中定义的模板，需要在定义模板的.cpp文件的末尾添加显式实例化代码
-// 类模板 自定义的一个双端数组
+
 template<class T>
 class BlockDeque{
 public:
-//类成员函数的声明
     explicit BlockDeque(size_t MaxCapacity  = 1000);
     ~BlockDeque();
     void clear();
@@ -39,7 +37,7 @@ private:
 
 template<class T>
 BlockDeque<T>::BlockDeque(size_t MaxCapacity):capacity(MaxCapacity){
-    assert(MaxCapacity > 0); // 容量必须大于零
+    assert(MaxCapacity > 0);
     isClose = false;
 }
 
