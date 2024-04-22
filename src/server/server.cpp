@@ -117,13 +117,23 @@ void Server::Start() {
         }
     }
 }
+/**
+ * @brief 向 fd 发送错误信息并关闭连接
+ * 
+ * @param fd  [in] 文件描述符，用于标识客户端连接
+ * @param info [in] 错误信息的字符串指针
+ * @return 函数不返回任何值。
+ */
 void Server::Send_Error(int fd, const char*info) {
-    assert(fd > 0);
+    assert(fd > 0); 
+    
+    // 尝试发送错误信息给fd
     int ret = send(fd, info, strlen(info), 0);
-    if(ret < 0) {
+    if(ret < 0) { // 发送失败
         LOG_WARN("send error to client[%d] error!", fd);
     }
-    close(fd);
+    
+    close(fd); // 关闭文件描述符，即断开连接
 }
 
 void Server::Close_Conn(HttpConn* client) {
