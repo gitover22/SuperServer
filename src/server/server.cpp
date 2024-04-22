@@ -135,10 +135,17 @@ void Server::Send_Error(int fd, const char*info) {
     
     close(fd); // 关闭文件描述符，即断开连接
 }
+/**
+ * @brief 关闭连接
+ * 
+ * @param client [in] 指向HttpConn对象的指针，表示要关闭的连接
+ * @return 函数不返回任何值
+ */
 
 void Server::Close_Conn(HttpConn* client) {
     assert(client);
     LOG_INFO("Client[%d] quit!", client->GetFd());
+    // 从epoll中删除该文件描述符
     epoller->DelFd(client->GetFd());
     client->Close();
 }

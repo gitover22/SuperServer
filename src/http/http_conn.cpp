@@ -25,16 +25,21 @@ void HttpConn::Close(){
     }
 }
 
+/**
+ * @brief 初始化Http连接,初始化一个HTTP连接对象，包括设置文件描述符、客户端地址
+ * @param fd [in] 文件描述符，用于网络通信
+ * @param addr [in] 客户端地址信息
+ */
 void HttpConn::init(int fd,const sockaddr_in& addr){
     assert(fd>0);
-    userCount++;
-    this->addr = addr;
-    this->fd = fd;
-    writeBuff.RetrieveAll();
-    readBuff.RetrieveAll();
-    is_Close =false;
+    userCount++; // 增加用户连接计数
+    this->addr = addr; // 设置客户端地址
+    this->fd = fd; // 设置文件描述符
+    writeBuff.RetrieveAll(); // 清空写缓冲区
+    readBuff.RetrieveAll(); // 清空读缓冲区
+    is_Close =false; // 标记连接为未关闭状态
+    // 记录日志信息，包括文件描述符、客户端IP和端口、当前用户连接数
     LOG_INFO("Client[%d](%s:%d) in, userCount:%d", fd, GetIP(), GetPort(), (int)userCount);
-
 }
 
 int HttpConn::GetFd() const {
