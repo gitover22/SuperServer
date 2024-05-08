@@ -2,7 +2,7 @@
 ThreadPool::ThreadPool(size_t threadCount):pool_(std::make_shared<Pool>()){
     assert(threadCount > 0 );
     for(size_t i=0;i<threadCount;i++){
-        std::thread([pool = pool_]{
+        std::thread([pool = this->pool_]{
             std::unique_lock<std::mutex> locker(pool->mtx);
             while(true){
                 if(!pool->tasks.empty()){

@@ -41,31 +41,55 @@ void HttpConn::init(int fd,const sockaddr_in& addr){
     // 记录日志信息，包括文件描述符、客户端IP和端口、当前用户连接数
     LOG_INFO("Client[%d](%s:%d) in, userCount:%d", fd, GetIP(), GetPort(), (int)userCount);
 }
-
+/**
+ * @brief 获取文件描述符
+ * @return 文件描述符
+ */
 int HttpConn::GetFd() const {
     return fd;
 }
-
+/**
+ * @brief 获取客户端地址信息
+ * @return 客户端地址信息
+ */
 struct  sockaddr_in HttpConn::GetAddr() const{
     return addr;
 }
+/**
+ * @brief 获取客户端IP地址
+ * @return 客户端IP地址
+ */
 const char* HttpConn::GetIP()const {
     return inet_ntoa(addr.sin_addr);
 }
-
+/**
+ * @brief 获取客户端端口号
+ * @return 客户端端口号
+ */
 int HttpConn::GetPort() const{
     return addr.sin_port;
 }
 
+/**
+ * 从HTTP连接中读缓冲区读取数据。
+ * 
+ * @param saveErrno 指向一个整型变量的指针，用于保存错误码。当读取过程中发生错误时，会将错误码保存到此处。
+ * @return 返回读取到的数据的字节数。如果读取失败，返回-1。
+ */
 ssize_t HttpConn::read(int *saveErrno){
-    ssize_t len =-1;
+    ssize_t len =-1; // 初始化读取长度为-1，表示未读取到任何数据
+    
     do{
+        // 尝试从套接字读取数据到缓冲区
         len =readBuff.ReadFd(fd,saveErrno);
+        // 如果读取的长度小于等于0，表示读取过程中遇到错误或连接已关闭
         if(len <=0){
             break;
         }
+    // 如果启用了一种称为ET（边缘触发）的模式，将持续尝试读取数据，直到没有更多数据可读
     }while(isET);
-    return len;
+    
+    return len; // 返回读取到的数据长度
 }
 ssize_t HttpConn::write(int* saveErrno){
     ssize_t len = -1;

@@ -248,7 +248,7 @@ void Server::On_Write(HttpConn* client) {
 bool Server::Init_Socket(){
     int ret;
     struct sockaddr_in addr;
-    // 检查端口号是否在有效范围内
+    // 端口号必须 [1024,65535]
     if(server_port >65535 || server_port <1024){
         LOG_ERROR("Port:%d error!",server_port);
         return false;
@@ -272,7 +272,7 @@ bool Server::Init_Socket(){
         return false;
     }
     
-    // 设置Socket选项：linger
+    // 设置socket属性：linger选项控制socket关闭方式
     ret =setsockopt(listenFd,SOL_SOCKET,SO_LINGER,&optLinger,sizeof(optLinger));
     if(ret < 0){
         close(listenFd);
@@ -280,7 +280,7 @@ bool Server::Init_Socket(){
         return false;
     }
     
-    // 设置Socket选项：端口复用 以允许新的服务器进程绑定到先前使用的端口上
+    // 设置socket属性：端口复用 以允许新的服务器进程绑定到先前使用的端口上
     int optval = 1;
     ret = setsockopt(listenFd,SOL_SOCKET,SO_REUSEADDR,(const void *)&optval,sizeof(int));
     if(ret == -1){
@@ -289,7 +289,7 @@ bool Server::Init_Socket(){
         return false;
     }
     
-    // 绑定端口
+    // 绑定socket文件描述符和具体的sockaddr结构体
     ret = bind(listenFd,(struct sockaddr *)&addr,sizeof(addr));
     if(ret < 0){
         LOG_ERROR("bind port:%d error!",server_port);
@@ -297,7 +297,7 @@ bool Server::Init_Socket(){
         return false;
     }
     
-    // 监听端口
+    // 监听端口，创建监听队列
     ret = listen(listenFd, 6);
     if(ret < 0) {
         LOG_ERROR("Listen port:%d error!", server_port);
