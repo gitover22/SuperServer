@@ -146,7 +146,7 @@ void Server::Close_Conn(HttpConn* client) {
     assert(client);
     LOG_INFO("Client[%d] quit!", client->GetFd());
     // 从epoll中删除该文件描述符
-    epoller->DelFd(client->GetFd());
+    epoller->Delete_Fd(client->GetFd());
     client->Close();
 }
 
@@ -156,7 +156,7 @@ void Server::Add_Client(int fd, sockaddr_in addr) {
     if(timeout > 0) {
         timer->add(fd, timeout, std::bind(&Server::Close_Conn, this,&users[fd]) );
     }
-    epoller->AddFd(fd, EPOLLIN | connEvent);
+    epoller->Add_Fd(fd, EPOLLIN | connEvent);
     Set_fd_Nonblock(fd);
     LOG_INFO("Client[%d] in!", users[fd].GetFd());
 }
@@ -213,9 +213,9 @@ void Server::On_Read(HttpConn* client) {
 
 void Server::On_Process(HttpConn* client) {
     if(client->process()) {
-        epoller->ModFd(client->GetFd(), connEvent | EPOLLOUT);
+        epoller->Modify_Fd(client->GetFd(), connEvent | EPOLLOUT);
     } else {
-        epoller->ModFd(client->GetFd(), connEvent | EPOLLIN);
+        epoller->Modify_Fd(client->GetFd(), connEvent | EPOLLIN);
     }
 }
 
@@ -306,7 +306,7 @@ bool Server::Init_Socket(){
     }
     
     // 将监听Socket添加到epoll中
-    ret = epoller->AddFd(listenFd,  listenEvent | EPOLLIN);
+    ret = epoller->Add_Fd(listenFd,  listenEvent | EPOLLIN);
     if(ret == 0) {
         LOG_ERROR("Add listen error!");
         close(listenFd);

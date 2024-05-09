@@ -15,8 +15,9 @@ ThreadPool::ThreadPool(size_t threadCount):pool_(std::make_shared<Pool>()){
                 else if(pool->isClosed) break;
                 else pool->cond.wait(locker);
              }
-        }).detach();
+        }).detach(); // 设置该线程为游离态，系统自动回收游离态线程，无需其他线程使用join回收
     }
+    
 }
 
 ThreadPool::~ThreadPool(){

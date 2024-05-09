@@ -5,28 +5,28 @@ Epoller::Epoller(int maxEvent):epoll_fd(epoll_create(512)),__events(maxEvent){
 Epoller::~Epoller(){
     close(epoll_fd);
 }
-bool Epoller::AddFd(int fd,uint32_t events){
+bool Epoller::Add_Fd(int fd,uint32_t events){
     if(fd < 0 ) return false;
     epoll_event ev = {0};
     ev.data.fd =fd;
     ev.events = events;
     return 0==epoll_ctl(epoll_fd,EPOLL_CTL_ADD,fd,&ev);
 }
-bool Epoller::ModFd(int fd , uint32_t events){
+bool Epoller::Modify_Fd(int fd , uint32_t events){
     if(fd<0) return false;
     epoll_event ev ={0};
     ev.data.fd = fd;
     ev.events = events;
     return 0 == epoll_ctl(epoll_fd,EPOLL_CTL_MOD,fd,&ev);
 }
-bool Epoller::DelFd(int fd){
+bool Epoller::Delete_Fd(int fd){
     if(fd<0) return false;
     epoll_event ev ={0};
     return 0 == epoll_ctl(epoll_fd,EPOLL_CTL_DEL,fd,&ev);
 
 }
-int Epoller::Wait(int timeout){
-    return epoll_wait(epoll_fd,&__events[0],static_cast<int>(__events.size()),timeout);
+int Epoller::Wait(int wtime_ms){
+    return epoll_wait(epoll_fd,&__events[0],static_cast<int>(__events.size()),wtime_ms);
 }
 int Epoller::GetEventFd(size_t i) const{
     assert(i<__events.size() && i>=0);
