@@ -48,11 +48,18 @@ Server::~Server(){
 }
 
 
-/**
- * @brief 初始化服务器的事件模式
- * @param trigMode 触发模式，0代表默认模式，1代表边缘触发，2代表水平触发，3代表对监听和连接都使用边缘触发
- */
+
 void Server::Init_EventMode(int trigMode) {
+// 水平触发（Level Triggered, LT）
+// 行为：在这种模式下，只要被监控的文件描述符的状态仍然满足请求的条件，epoll_wait 就会重复通知该事件。例如，如果指定监听读事件，只要缓冲区中还有数据未读，epoll_wait 就会再次通知可读事件。
+// 适用场景：在水平触发模式下，应用程序可以不用立即处理所有数据，也不需要非阻塞 I/O，因为 epoll_wait 会在数据依然可读或可写时再次通知。
+// 优点：编程模型简单，易于理解和实现。
+// 缺点：可能会导致更多的 epoll_wait 调用返回，因为只要条件满足，事件就会被反复报告，从而性能降低
+// 边缘触发（Edge Triggered, ET）
+// 行为：在边缘触发模式下，只有状态变化时（例如从不可读变为可读）epoll_wait 才会通知该事件一次。这意味着在 epoll_wait 通知之后，需要一次性处理掉所有的数据，直到对方发送更多的数据或状态再次改变。
+// 适用场景：适用于非阻塞 I/O，这种模式可以减少 epoll_wait 的调用次数，提高应用程序效率，特别是在高负载时。
+// 优点：减少了事件通知的次数，只在状态真正发生变化时才触发，可以显著提高程序的效率和性能。
+// 缺点：编程复杂度高，需要确保每次事件通知时都完全处理完相关的数据，否则可能会错过事件处理。
     // 默认的事件模式设置
     listenEvent = EPOLLRDHUP;
     connEvent = EPOLLONESHOT | EPOLLRDHUP; // EPOLLONESHOT表示只监听一次事件
@@ -117,13 +124,7 @@ void Server::Start() {
         }
     }
 }
-/**
- * @brief 向 fd 发送错误信息并关闭连接
- * 
- * @param fd  [in] 文件描述符，用于标识客户端连接
- * @param info [in] 错误信息的字符串指针
- * @return 函数不返回任何值。
- */
+
 void Server::Send_Error(int fd, const char*info) {
     assert(fd > 0); 
     
@@ -135,12 +136,6 @@ void Server::Send_Error(int fd, const char*info) {
     
     close(fd); // 关闭文件描述符，即断开连接
 }
-/**
- * @brief 关闭连接
- * 
- * @param client [in] 指向HttpConn对象的指针，表示要关闭的连接
- * @return 函数不返回任何值
- */
 
 void Server::Close_Conn(HttpConn* client) {
     assert(client);
@@ -234,17 +229,14 @@ void Server::On_Write(HttpConn* client) {
     else if(ret < 0) {
         if(writeErrno == EAGAIN) {
             /* 继续传输 */
-            epoller->ModFd(client->GetFd(), connEvent | EPOLLOUT);
+            epoller->Modify_Fd(client->GetFd(), connEvent | EPOLLOUT);
             return;
         }
     }
     Close_Conn(client);
 }
 
-/**
- * @brief 本函数用于创建并初始化服务器的Socket，设置相应的选项，并将其注册到epoll中等待监听。
- * @return bool 返回true表示成功初始化，返回false表示初始化过程中遇到错误。
- */
+
 bool Server::Init_Socket(){
     int ret;
     struct sockaddr_in addr;

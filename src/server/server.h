@@ -57,24 +57,27 @@ public:
     */
     void Start();
 private:
-    /*!
-    * @brief socket的初试化
-    *
+    /**
+     * @brief 本函数用于创建并初始化服务器的Socket，设置相应的选项，并将其注册到epoll中等待监听。
+     * @return bool 返回true表示成功初始化，返回false表示初始化过程中遇到错误。
     */
     bool Init_Socket();
 
-    /*!
-    * @brief 初试化事件触发模式
-    * @param trigger_mode [in] 接受的触发模式
+    /**
+     * @brief 初始化服务器的事件模式
+     * @param trigger_mode [in] 触发模式，0代表默认模式，1代表边缘触发，2代表水平触发，3代表对监听和连接都使用边缘触发
     */
     void Init_EventMode(int trigger_mode);
     /**
      * @brief 添加连接客户
-     * @param [in] fd       文件描述符
+     * @param [in] fd       客户端的文件描述符
      * @param [in] addr     客户端地址信息
     */
     void Add_Client(int fd, sockaddr_in addr);
-
+    /**
+     * @brief 监听listenFd上的客户链接请求
+     * @return void
+    */
     void Deal_Listen();
 
     void Deal_Write(HttpConn* client);
@@ -83,31 +86,38 @@ private:
 
 
     /**
-     * @brief 发送错误信息
-     * @param [in] fd       文件描述符
-     * @param [in] info     要发送的信息
+     * @brief 向 fd 发送错误信息并关闭连接
+     * 
+     * @param fd  [in] 文件描述符，用于标识客户端
+     * @param info [in] 错误信息的字符串指针
+     * @return 函数不返回任何值。
     */
     void Send_Error(int fd, const char*info);
 
     void Extent_Time(HttpConn* client);
 
     /**
-     * @brief 关闭客户连接
-     * @param [in] client     客户端连接信息
-    */
+     * @brief 关闭连接
+     * 
+     * @param client [in] 指向HttpConn类的指针，表示要关闭的连接
+     * @return 函数不返回任何值
+     */
     void Close_Conn(HttpConn* client);
 
     void On_Read(HttpConn* client);
     void On_Write(HttpConn* client);
     void On_Process(HttpConn* client);
-
+    /**
+     * @brief 设置文件描述符为非阻塞模式
+     * @param fd [in] 要设置的文件描述符
+    */
     static int Set_fd_Nonblock(int fd);
 
     static const int MAX_FD = 65536;
 
     int server_port;
     bool openLinger;
-    int timeout;  // 记录时间   单位：毫秒
+    int timeout;  // 记录超时时间   单位：毫秒
     bool isClose;
     int listenFd;
     static char* srcDir; //web 目录的路径

@@ -18,7 +18,7 @@ public:
     /**
      * @brief 修改当前epoll_fd实例上的事件
      * @param fd [in] 待修改事件的文件描述符
-     * @param events [in] fd对应的事件
+     * @param events [in] 要监听fd上对应的事件
      * @return 成功返回true，失败返回false
     */
     bool Modify_Fd(int fd , uint32_t events);
