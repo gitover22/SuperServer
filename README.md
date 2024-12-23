@@ -1,6 +1,11 @@
 ### SuperServer
-a high performance server
+<img src="image.png" alt="alt text" width="400" height="240">
 
+a high performance server with:
+- epoll + Reactor/Proactor = IO
+- thread pool, database connection pool
+- Synchronous/asynchronous logging systems
+- RAII, semaphore, mutex, smart pointers and class templates
 #### Project structure
 ```
 |-- src                 source file dir
