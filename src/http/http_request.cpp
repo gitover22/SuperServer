@@ -152,7 +152,7 @@ void HttpRequest::ParsePost_(){
     }
 }
 void HttpRequest::ParseFromUrlencoded_(){
-    if(body_.size() == 0) return ;
+    if(body_.size() == 0) return ; // body_:"username=admin&password=admin123" admin123截取失败
     std::string key,value;
     int num =0;
     int n = body_.size();
@@ -182,6 +182,11 @@ void HttpRequest::ParseFromUrlencoded_(){
             default:
                 break;
         }
+    }
+    // Handle the last key-value pair
+    if(j < n) {
+        value = body_.substr(j, i-j);
+        post_[key] = value;
     }
 }
 bool HttpRequest::UserVerify(const std::string& name, const std::string& pwd, bool isLogin){

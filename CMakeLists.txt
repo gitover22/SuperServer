@@ -1,13 +1,11 @@
-# minimum version of CMake required
 cmake_minimum_required(VERSION 3.10)
 
-# Define the project and the language used ,  after PROJECT_NAME=SuperServer
 project(SuperServer CXX)
 
 # print PROJECT_SOURCE_DIR :/home/huafeng/SuperServer
 # message(STATUS "Project source directory: ${PROJECT_SOURCE_DIR}")
 
-# Set the C++14 standard
+# C++14
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
@@ -34,7 +32,6 @@ add_executable(${PROJECT_NAME}
     ${PROJECT_SOURCE_DIR}/src/http/http_conn.cpp
     ${PROJECT_SOURCE_DIR}/src/http/http_request.cpp
     ${PROJECT_SOURCE_DIR}/src/http/http_response.cpp
-    # ${PROJECT_SOURCE_DIR}/src/log/block_queue.cpp
     ${PROJECT_SOURCE_DIR}/src/log/log.cpp
     ${PROJECT_SOURCE_DIR}/src/pool/sqlconnpool.cpp
     ${PROJECT_SOURCE_DIR}/src/pool/thread_pool.cpp

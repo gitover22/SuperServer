@@ -3,7 +3,8 @@
 */
 
 #include "server.h"
-char* Server::srcDir = "/home/huafeng/SuperServer/web/";
+// #include <filesystem> 
+char* Server::srcDir = "/home/zouguoqiang/SuperServer/web"; // TODO(huafeng):using std::filesystem::current_path().c_str() to get the current path
 Server::Server(int port_num,int trigger_mode,int time,
            bool quit_mode,int mysql_port,const char* mysql_user_name,
            const char* mysql_pwd,const char* db_name,int connect_pool_num,

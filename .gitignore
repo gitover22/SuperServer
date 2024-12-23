@@ -1,4 +1,5 @@
-.vscode
+.vscode/log
 push.sh
 build/
 log/
+SuperServer
