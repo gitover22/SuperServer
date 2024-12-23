@@ -6,10 +6,10 @@ ThreadPool::ThreadPool(size_t threadCount):pool_(std::make_shared<Pool>()){
             std::unique_lock<std::mutex> locker(pool->mtx);
             while(true){
                 if(!pool->tasks.empty()){
-                    auto task = std::move(pool->tasks.front()); // task是一个可执行函数
-                    pool->tasks.pop();
+                    auto task = std::move(pool->tasks.front()); // 取出任务
+                    pool->tasks.pop(); //将任务从任务队列中删除
                     locker.unlock();
-                    task();
+                    task(); // 执行任务
                     locker.lock();
                 }
                 else if(pool->isClosed) break;

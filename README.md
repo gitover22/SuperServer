@@ -6,6 +6,7 @@ a high performance server with:
 - thread pool, database connection pool
 - Synchronous/asynchronous logging systems
 - RAII, semaphore, mutex, smart pointers and class templates
+- Implementing the http Protocol
 #### Project structure
 ```
 |-- src                 source file dir

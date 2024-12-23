@@ -10,19 +10,19 @@ bool Epoller::Add_Fd(int fd,uint32_t events){
     epoll_event ev = {0};
     ev.data.fd =fd;
     ev.events = events;
-    return 0==epoll_ctl(epoll_fd,EPOLL_CTL_ADD,fd,&ev);
+    return 0==epoll_ctl(epoll_fd,EPOLL_CTL_ADD,fd,&ev);  // 添加待监听事件
 }
 bool Epoller::Modify_Fd(int fd , uint32_t events){
     if(fd<0) return false;
     epoll_event ev ={0};
     ev.data.fd = fd;
     ev.events = events;
-    return 0 == epoll_ctl(epoll_fd,EPOLL_CTL_MOD,fd,&ev);
+    return 0 == epoll_ctl(epoll_fd,EPOLL_CTL_MOD,fd,&ev); // 修改事件
 }
 bool Epoller::Delete_Fd(int fd){
     if(fd<0) return false;
     epoll_event ev ={0};
-    return 0 == epoll_ctl(epoll_fd,EPOLL_CTL_DEL,fd,&ev);
+    return 0 == epoll_ctl(epoll_fd,EPOLL_CTL_DEL,fd,&ev); // 删除事件
 
 }
 int Epoller::Wait(int wtime_ms){

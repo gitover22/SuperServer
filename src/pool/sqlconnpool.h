@@ -19,13 +19,13 @@ public:
     */
     MYSQL *GetConn();
     void FreeConn(MYSQL * sql);
-    int GetFreeConnCount();
+    int GetFreeConnCount(); // 获取空闲的连接数
     void init(const char* host,int port,
               const char* user,const char* pwd,
               const char* dbName,int connSize);
     void ClosePool();
 private:
-    SqlConnPool();
+    SqlConnPool(); // 构造函数私有化->单例模式
     ~SqlConnPool();
     int MAX_CONN_; // 最大连接数
     int useCount_; // 已使用连接数

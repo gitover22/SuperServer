@@ -18,8 +18,8 @@ private:
     struct Pool{
         std::mutex mtx;
         std::condition_variable cond;
-        bool isClosed;
-        std::queue<std::function<void()>> tasks;
+        bool isClosed; // 线程池是否关闭
+        std::queue<std::function<void()>> tasks; // 任务队列
     };
     std::shared_ptr<struct Pool> pool_;
     
@@ -28,9 +28,9 @@ template<typename T>
 void ThreadPool::AddTask(T&& task){
     {
         std::lock_guard<std::mutex> locker(pool_->mtx);
-        pool_->tasks.emplace(std::forward<T>(task));
+        pool_->tasks.emplace(std::forward<T>(task)); // 完美转发
 
     }
-    pool_->cond.notify_one();
+    pool_->cond.notify_one(); // 唤醒一个等待在条件变量 cond 上的线程
 }
 #endif

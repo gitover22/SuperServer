@@ -205,8 +205,8 @@ bool HttpRequest::UserVerify(const std::string& name, const std::string& pwd, bo
     snprintf(order, 256, "SELECT username, password FROM user WHERE username='%s' LIMIT 1", name.c_str());
     LOG_DEBUG("%s",order);
 
-    // mysql_query()执行SQL语句
-    if(mysql_query(sql ,order)){
+    // 使用mysql_query()库函数执行SQL语句
+    if(mysql_query(sql ,order)){ 
         mysql_free_result(res);
         return false;
     }
